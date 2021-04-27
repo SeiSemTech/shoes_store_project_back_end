@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Depends, WebSocket
-from routes import app_login, app_user
+from routes import app_auth, app_user
 from database import mysql
 
 app = FastAPI()
 
-app.include_router(app_login, prefix='/api')
+app.include_router(app_auth, prefix='/api')
 app.include_router(app_user, prefix='/api')
 
 

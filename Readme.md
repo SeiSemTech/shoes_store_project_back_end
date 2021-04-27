@@ -22,6 +22,10 @@
 
 `python -m pip install -r requirements.txt`
 
+- Relizar migracíón de base de datos
+
+`python migrate.py`
+
 ## Ejecución
 
 - Con la maquina virtual activada, ejecutar el siguiente comando en consola:

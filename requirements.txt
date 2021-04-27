@@ -6,3 +6,5 @@ pymysql==1.0.2
 cryptography==3.4.7
 PyJWT==1.7.1
 passlib==1.7.2
+jinjasql==0.1.8
+pandas==1.2.4
