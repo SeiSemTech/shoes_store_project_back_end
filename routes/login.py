@@ -1,6 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
+import json
+from fastapi import APIRouter
+from interfaces.auth import LoginUser
 
 fake_users_db = {
     "johndoe": {
@@ -23,25 +26,22 @@ app_login = APIRouter()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-@app_login.get(
+@app_login.post(
     path='/login',
     status_code=200,
     tags=['Authentication'],
-    summary="Authenticate user via Google and validate if user is authorized",
-    description="Login to google with OAUTH service and query the database to validate users"
+    summary="Authenticate user via email and password and validate if user is authorized",
+    description="Login to via OAUTH2 service and query the database to validate users"
 )
-async def login():
+async def login(request: LoginUser):
     """
-    Authenticate user via Google and validate if user
+    Authenticate user via OAUTH2 and validate if user
     have access to the application.
     """
+    print(json.dumps(request))
     return {
         "fancy_json": "Go on"
     }
 
 
-@app_login.post("/logout")
-async def logout(token: str = Depends(oauth2_scheme)):
-    return{
-        "fancy_json": "Go out"
-    }
+
