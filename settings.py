@@ -1,10 +1,11 @@
 import os
 from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-
 ENVIRONMENT = os.environ.get("ENVIRONMENT")
+
+if ENVIRONMENT != 'prod':
+    dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
 
 SHOES_DATABASE = os.environ.get('SHOES_DATABASE')
 

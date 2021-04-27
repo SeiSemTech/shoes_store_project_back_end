@@ -32,14 +32,9 @@
 
 `uvicorn app:app --reload --port 5000`
 
-## Azure
+## Integrantes:
 
-Lo que viene a continuación es para realizar el despliegue en Docker de la imagen en la nube manualmente ( Por favor, no tocar )
-
-#### Build
-
-docker build . -t zapacommerce.azurecr.io/zapacommerce-build
-
-#### Push
-
-docker push zapacommerce.azurecr.io/zapacommerce-build
+-
+-
+-
+-
