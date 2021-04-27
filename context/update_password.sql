@@ -1,0 +1,1 @@
+UPDATE LOGIN set password = {2} where user_id = {0};

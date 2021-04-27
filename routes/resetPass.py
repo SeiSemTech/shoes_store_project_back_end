@@ -1,24 +1,14 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-
-
-class Item(BaseModel):
-    name: str
-    price: float
-
-
+from interfaces.auth import LoginUser
+from database.mysql import execute_query
 app_resetpass = APIRouter()
 
 
 @app_resetpass.post("/resetpass")
-async def resetpass(token, doc_usuario, password, item: Item):
+async def resetpass(current_user: LoginUser = Depends(get_current_user)):
 
-    if not token:
-        print("no token")
-    return item
-    return{
-        "token": token,
-        "doc_usuario": doc_usuario,
-        "pass": password
-        
-    }
+    execute_query("update_password.sql",True,**current_user)
+    
+    return 
+    
