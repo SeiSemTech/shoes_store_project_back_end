@@ -13,6 +13,6 @@ if ENVIRONMENT != 'prod':
     MYSQL_HOST = os.environ.get('MYSQL_HOST')
 
 else:
-    MYSQLCONNSTR_MYSQL_USER = os.environ.get('MYSQL_USER')
-    MYSQLCONNSTR_MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD')
-    MYSQLCONNSTR_MYSQL_HOST = os.environ.get('MYSQL_HOST')
+    MYSQL_USER = os.environ.get('MYSQLCONNSTR_MYSQL_USER')
+    MYSQL_PASSWORD = os.environ.get('MYSQLCONNSTR_MYSQL_PASSWORD')
+    MYSQL_HOST = os.environ.get('MYSQLCONNSTR_MYSQL_HOST')
