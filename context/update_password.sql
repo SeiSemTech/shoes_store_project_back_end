@@ -1,1 +1,1 @@
-UPDATE LOGIN set password = {2} where user_id = {0};
+UPDATE LOGIN set password = {{password}} where user_id = {{user_id}};

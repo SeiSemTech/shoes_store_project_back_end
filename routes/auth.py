@@ -42,9 +42,11 @@ async def login(request: LoginUser):
     summary="Reset password via authorized token"
 )
 async def reset_password(request: LoginUser):
-    execute_query("update_password.sql", True, **request.dict())
 
-    return
+    data = execute_query("get_user_id_by_email.sql", True, **request.dict())
+    execute_query("update_password.sql", False, **request.dict(), **data[0])
+
+    return "success"
 
 
 
