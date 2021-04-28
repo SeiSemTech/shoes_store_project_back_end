@@ -30,6 +30,7 @@ def execute_query(query_name: str, fetch_data: bool=False, **kwargs):
     if sql_conn:
         query = open(os.path.join(CONTEXT_PATH, query_name), 'r', encoding='utf-8').read()
         formated_query, bind_params = sql_formatter.prepare_query(query, kwargs)
+        sql_conn.connnection.ping()
         with sql_conn.cursor() as cursor:
             cursor.execute(formated_query, bind_params)
             sql_conn.commit()
