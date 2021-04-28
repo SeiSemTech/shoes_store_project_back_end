@@ -24,8 +24,9 @@ CREATE TABLE IF NOT EXISTS login (
 --
 
 CREATE TABLE IF NOT EXISTS roles (
-  role_id int(11) NOT NULL,
-  role_type varchar(30) NOT NULL
+  role_id int(11) NOT NULL AUTO_INCREMENT,
+  role_type varchar(30) NOT NULL,
+  UNIQUE KEY (role_id)
 );
 
 
@@ -36,11 +37,13 @@ CREATE TABLE IF NOT EXISTS roles (
 --
 
 CREATE TABLE IF NOT EXISTS users (
-  user_id int(11) NOT NULL,
+  user_id int(11) NOT NULL AUTO_INCREMENT,
   name varchar(30) NOT NULL,
   email varchar(30) NOT NULL,
   phone varchar(30) NOT NULL,
-  role_id int(11) NOT NULL
+  role_id int(11) NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT False,
+  UNIQUE KEY (user_id)
 );
 
 --
@@ -85,14 +88,14 @@ ALTER TABLE users
 --
 -- Poblar base de datos
 --
-INSERT INTO roles (role_id, role_type) VALUES
-  (1, 'Administrador'),
-  (2, 'Usuario Registrado'),
-  (3, 'Usuario Anonimo');
+INSERT INTO roles (role_type) VALUES
+  ('Administrador'),
+  ('Usuario Registrado'),
+  ('Usuario Anonimo');
 
-INSERT INTO users (user_id, name, email, phone, role_id) VALUES
-  (1, 'Admin', 'admin@zapacommerce.com', '3123026202', 1),
-  (2, 'User', 'user@zapacommerce.com', '3123026203', 2);
+INSERT INTO users (name, email, phone, role_id) VALUES
+  ('Admin', 'admin@zapacommerce.com', '3123026202', 1),
+  ('User', 'user@zapacommerce.com', '3123026203', 2);
 
 INSERT INTO login (user_id, password) VALUES
   (1, 'admin'),

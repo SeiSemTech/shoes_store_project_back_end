@@ -6,7 +6,7 @@ from pymysql.constants import CLIENT
 
 CONTEXT_PATH = 'context'
 
-sql_conn = None
+sql_conn: pymysql.connections.Connection = None
 sql_formatter = JinjaSql()
 
 
@@ -21,12 +21,18 @@ def db_connection(is_migrate=False):
     )
 
 
-def execute_query(query_name, fetch_data=False, **kwargs):
+# TODO: IMPLEMENT TRANSACTION OF MULTIPLE QUERYS
+def execute_querys(*query_name):
+    pass
+
+
+def execute_query(query_name: str, fetch_data: bool=False, **kwargs):
     if sql_conn:
         query = open(os.path.join(CONTEXT_PATH, query_name), 'r', encoding='utf-8').read()
         formated_query, bind_params = sql_formatter.prepare_query(query, kwargs)
         with sql_conn.cursor() as cursor:
             cursor.execute(formated_query, bind_params)
+            sql_conn.commit()
             if fetch_data:
                 return cursor.fetchall()
     else:

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, WebSocket
+from fastapi import FastAPI
 from routes import app_auth, app_user
 from database import mysql
 

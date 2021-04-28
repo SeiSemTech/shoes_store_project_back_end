@@ -9,7 +9,7 @@ app_auth = APIRouter()
 
 @app_auth.post(
     path='/login',
-    status_code=200,
+    status_code=201,
     tags=['Authentication'],
     summary="Authenticate user via email and password and validate if user is authorized"
 )
@@ -26,7 +26,7 @@ async def login(request: LoginUser):
     )
     if len(data) > 0:
         return {
-            "user": data
+            "user": data # TODO RETURN TOKEN
         }
     else:
         return HTTPException(

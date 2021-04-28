@@ -9,11 +9,16 @@ class Roles(str, Enum):
 
 
 class User(BaseModel):
-    id: int
-    email: str
+    user_id: int
     name: str
-    last_name: str
-    password: str
+    email: str
     phone: str
-    is_active: str
-    role: Roles
+    role_id: Roles
+    is_active: bool
+
+
+class NormalUserRegister(BaseModel):
+    name: str
+    email: str
+    phone: str
+
