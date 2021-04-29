@@ -26,7 +26,7 @@ async def login(request: LoginUser):
     )
     if len(data) > 0:
         return {
-            "user": data # TODO RETURN TOKEN
+            "user": data  # TODO RETURN TOKEN
         }
     else:
         return HTTPException(
