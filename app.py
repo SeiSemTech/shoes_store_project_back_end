@@ -21,6 +21,7 @@ app.add_middleware(
 
 app.include_router(app_auth, prefix='/api')
 app.include_router(app_user, prefix='/api')
+app.include_router(app_article, prefix='/api')
 
 @app.on_event('startup')
 def connect_db():
