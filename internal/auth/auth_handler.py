@@ -10,9 +10,7 @@ def sign_jwt(user_id: str, role: str) -> Dict[str, any]:
         "role": role,
         "expires": time.time() + (int(JWT_EXPIRATION_MINUTES) * 60)
     }
-    return {
-        "access_token": jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
-    }
+    return jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
 
 
 def decode_jwt(token: str) -> dict:

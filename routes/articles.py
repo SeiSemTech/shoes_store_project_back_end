@@ -1,120 +1,125 @@
 from fastapi import APIRouter, HTTPException
 from database.mysql import execute_query
-from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED
+from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from fastapi.responses import JSONResponse
+
 from interfaces.articles import *
+from fastapi import APIRouter, HTTPException, Depends
+from internal.auth.auth_bearer import JWTBearer
 
 app_article = APIRouter()
+
 
 @app_article.post(
     path='/create_category',
     status_code=201,
     tags=['Article'],
-    summary="Create article in SQL database"
+    summary="Create article in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
-
 async def create_category(request: Category):
-    
     execute_query("create_category.sql", False, **request.dict())
     return ""
+
 
 @app_article.post(
     path='/create_product',
     status_code=201,
     tags=['Article'],
-    summary="Create product in SQL database"
+    summary="Create product in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product(request: Product):
-
     execute_query("create_product.sql", False, **request.dict())
     return ""
+
 
 @app_article.post(
     path='/create_configuration',
     status_code=201,
     tags=['Article'],
-    summary="Create configuration in SQL database"
+    summary="Create configuration in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_configuration(request: Configuration):
-
     execute_query("create_configuration.sql", False, **request.dict())
     return ""
 
+
 @app_article.post(
-    path='/create_productConfiguration',
+    path='/create_product_configuration',
     status_code=201,
     tags=['Article'],
-    summary="Create product configuration in SQL database"
+    summary="Create product configuration in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
-async def create_ProductConfiguration(request: ProductConfiguration):
-
+async def create_product_configuration(request: ProductConfiguration):
     execute_query("create_ProductConfiguration.sql", False, **request.dict())
     return ""
 
-#DELETE METHODS 
 
+# DELETE METHODS
 @app_article.post(
     path='/delete_category',
     status_code=201,
     tags=['Article'],
-    summary="Delete category in SQL database"
+    summary="Delete category in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
-
-async def delete_catefory(request: Category):
-    
+async def delete_category(request: Category):
     execute_query("disable_category.sql", False, **request.dict())
     return ""
+
 
 @app_article.post(
     path='/delete_product',
     status_code=201,
     tags=['Article'],
-    summary="Delete product in SQL database"
+    summary="Delete product in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
-
 async def delete_product(request: Product):
 
     execute_query("disable_product.sql", False, **request.dict())
     return ""
 
+
 @app_article.post(
     path='/delete_configuration',
     status_code=201,
     tags=['Article'],
-    summary="Delete configuration in SQL database"
+    summary="Delete configuration in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def delete_configuration(request: Configuration):
-
     execute_query("delete_configuration.sql", False, **request.dict())
     return ""
 
+
 @app_article.post(
-    path='/delete_productConfiguration',
+    path='/delete_product_configuration',
     status_code=201,
     tags=['Article'],
-    summary="Delete product configuration in SQL database"
+    summary="Delete product configuration in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
-async def delete_ProductConfiguration(request: ProductConfiguration):
-
+async def delete_product_configuration(request: ProductConfiguration):
     execute_query("delete_ProductConfiguration.sql", False, **request.dict())
     return ""
 
 
-
-
-
+# LIST METHODS
 @app_article.get(
-    path='/read',
+    path='/get_articles',
     status_code=200,
     tags=['Article'],
-    summary="Read articles in SQL database"
+    summary="Read articles in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-async def getAllArticles():
-
+async def get_all_articles():
     data = execute_query(
         query_name="get_all_articles.sql",
-        fetch_data=True,
-        **request.dict()
+        fetch_data=True
     )
 
     if len(data) > 0:
@@ -126,5 +131,3 @@ async def getAllArticles():
             status_code=HTTP_404_NOT_FOUND,
             detail="No articles have been published"
         )
-
-    return { data }

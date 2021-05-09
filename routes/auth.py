@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from interface.auth import LoginUser
 from database.mysql import execute_query
-from starlette.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND, HTTP_200_OK
-from interface.actors import Roles
+from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 from internal.auth.auth_bearer import JWTBearer
 from internal.auth.auth_handler import sign_jwt
@@ -27,9 +28,11 @@ async def login(request: LoginUser):
         **request.dict()
     )
     if data:
-        return {
-            "token": sign_jwt(data['email'], data['role_type'])
-        }
+        token = sign_jwt(data['email'], data['role_type'])
+        response = jsonable_encoder({
+            "token": token
+        })
+        return JSONResponse(content=response)
     else:
         return HTTPException(
             status_code=HTTP_404_NOT_FOUND,
@@ -51,6 +54,7 @@ async def reset_password(request: LoginUser):
     data = execute_query("get_user_id_by_email.sql", fetch_one=True, **request.dict())
     execute_query("update_password.sql", **request.dict(), **data)
 
-    return {
+    response = jsonable_encoder({
         "message": "password_reset"
-    }
+    })
+    return JSONResponse(content=response)
