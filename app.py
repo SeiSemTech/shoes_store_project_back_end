@@ -9,7 +9,7 @@ app = FastAPI()
 if ENVIRONMENT == 'prod':
     origins = ['https://zapacommerce.web.app']
 else:
-    origins = ['http://localhost:4200']
+    origins = ['https://zapacommerce-dev.web.app', 'http://localhost:4200']
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,6 +22,7 @@ app.add_middleware(
 app.include_router(app_auth, prefix='/api')
 app.include_router(app_user, prefix='/api')
 app.include_router(app_article, prefix='/api/articles')
+
 
 @app.on_event('startup')
 def connect_db():

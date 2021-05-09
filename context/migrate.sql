@@ -2,9 +2,17 @@
 -- Base de datos: zapacommerce
 --
 
+{% if prod %}
 DROP DATABASE IF EXISTS zapacommerce;
 CREATE DATABASE IF NOT EXISTS zapacommerce;
 USE zapacommerce;
+{% else %}
+DROP DATABASE IF EXISTS zapacommercedev;
+CREATE DATABASE IF NOT EXISTS zapacommercedev;
+USE zapacommercedev;
+{% endif %}
+
+
 
 -- --------------------------------------------------------
 
