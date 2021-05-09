@@ -4,6 +4,7 @@ from database.mysql import execute_query
 from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED
 from fastapi.responses import JSONResponse
 
+
 app_user = APIRouter()
 
 
@@ -25,7 +26,6 @@ async def create_users(request: NormalUserRegister):
     if not email:
         role = execute_query(
             query_name='role_get.sql',
-            fetch_data=True,
             fetch_one=True,
             **{'role_type': 'Usuario Registrado'}
         )
@@ -37,7 +37,7 @@ async def create_users(request: NormalUserRegister):
             fetch_data=False,
             **user
         )
-        return JSONResponse({
+        return JSONResponse(content={
             "status_code": HTTP_201_CREATED,
             "message": "User created successfully"
         })
