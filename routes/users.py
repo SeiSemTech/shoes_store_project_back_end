@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from interfaces.actors import NormalUserRegister
+from interface.actors import NormalUserRegister
 from database.mysql import execute_query
 from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED
 from fastapi.responses import JSONResponse
@@ -26,10 +26,11 @@ async def create_users(request: NormalUserRegister):
         role = execute_query(
             query_name='role_get.sql',
             fetch_data=True,
+            fetch_one=True,
             **{'role_type': 'Usuario Registrado'}
         )
         user['is_active'] = True
-        user['role_id'] = role[0]['role_id']
+        user['role_id'] = role['role_id']
 
         execute_query(
             query_name='user_create.sql',

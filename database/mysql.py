@@ -26,7 +26,7 @@ def execute_querys(*query_name):
     pass
 
 
-def execute_query(query_name: str, fetch_data: bool=False, **kwargs):
+def execute_query(query_name: str, fetch_data: bool = False, fetch_one: bool = False, **kwargs):
     if sql_conn:
         query = open(os.path.join(CONTEXT_PATH, query_name), 'r', encoding='utf-8').read()
         formated_query, bind_params = sql_formatter.prepare_query(query, kwargs)
@@ -36,5 +36,7 @@ def execute_query(query_name: str, fetch_data: bool=False, **kwargs):
             sql_conn.commit()
             if fetch_data:
                 return cursor.fetchall()
+            if fetch_one:
+                return cursor.fetchone()
     else:
         raise Exception('Need to initialize DB connection first')
