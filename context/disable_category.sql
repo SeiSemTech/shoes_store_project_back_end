@@ -1,0 +1,1 @@
+UPDATE CATEGORY set status = {{status}} where id = {{id}};
