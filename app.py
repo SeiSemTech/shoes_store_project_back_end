@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import app_auth, app_user
+from routes import app_auth, app_user, app_article
 from database import mysql
 from settings import ENVIRONMENT
 
@@ -21,6 +21,7 @@ app.add_middleware(
 
 app.include_router(app_auth, prefix='/api')
 app.include_router(app_user, prefix='/api')
+app.include_router(app_article, prefix='/api/articles')
 
 @app.on_event('startup')
 def connect_db():
