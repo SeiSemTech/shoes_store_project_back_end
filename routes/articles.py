@@ -1,9 +1,7 @@
-from fastapi import APIRouter, HTTPException
 from database.mysql import execute_query
-from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED, HTTP_404_NOT_FOUND
-from fastapi.responses import JSONResponse
+from starlette.status import HTTP_404_NOT_FOUND
 
-from interfaces.articles import *
+from interface.articles import *
 from fastapi import APIRouter, HTTPException, Depends
 from internal.auth.auth_bearer import JWTBearer
 
@@ -54,7 +52,7 @@ async def create_configuration(request: Configuration):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product_configuration(request: ProductConfiguration):
-    execute_query("create_ProductConfiguration.sql", False, **request.dict())
+    execute_query("create_product_configuration.sql", False, **request.dict())
     return ""
 
 
@@ -104,7 +102,7 @@ async def delete_configuration(request: Configuration):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def delete_product_configuration(request: ProductConfiguration):
-    execute_query("delete_ProductConfiguration.sql", False, **request.dict())
+    execute_query("delete_product_configuration.sql", False, **request.dict())
     return ""
 
 

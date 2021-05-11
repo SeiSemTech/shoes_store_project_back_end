@@ -11,12 +11,7 @@ JWT_EXPIRATION_MINUTES = os.environ.get('JWT_EXPIRATION_MINUTES')
 JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
 JWT_ALGORITHM = os.environ.get('JWT_ALGORITHM')
 
-if ENVIRONMENT != 'prod':
-    MYSQL_USER = os.environ.get('MYSQL_USER')
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD')
-    MYSQL_HOST = os.environ.get('MYSQL_HOST')
 
-else:
-    MYSQL_USER = os.environ.get('MYSQLCONNSTR_MYSQL_USER')
-    MYSQL_PASSWORD = os.environ.get('MYSQLCONNSTR_MYSQL_PASSWORD')
-    MYSQL_HOST = os.environ.get('MYSQLCONNSTR_MYSQL_HOST')
+MYSQL_USER = os.environ.get('MYSQLCONNSTR_MYSQL_USER')
+MYSQL_PASSWORD = os.environ.get('MYSQLCONNSTR_MYSQL_PASSWORD')
+MYSQL_HOST = os.environ.get('MYSQLCONNSTR_MYSQL_HOST')
