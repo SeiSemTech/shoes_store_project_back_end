@@ -1,2 +1,3 @@
 SELECT *
-FROM articles
+FROM product
+order by id desc

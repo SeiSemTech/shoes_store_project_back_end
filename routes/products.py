@@ -81,7 +81,7 @@ async def get_all_products():
     summary="Read product by ID in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-async def get_products_by_id(request: int):
+async def get_products_by_id(request: ProductId):
     query_path = path.join("products", "get_products_by_id.sql")
 
     data = execute_query(
@@ -89,7 +89,6 @@ async def get_products_by_id(request: int):
         fetch_data=True,
         **request.dict()
     )
-
     if len(data) > 0:
         return {
             "products": data  # TODO RETURN TOKEN

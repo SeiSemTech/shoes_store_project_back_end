@@ -16,6 +16,8 @@ class Product(BaseModel):
     description: str
     category_id: int
 
+class ProductId(BaseModel):
+    id: int
 
 class Configuration(BaseModel):
     id: int

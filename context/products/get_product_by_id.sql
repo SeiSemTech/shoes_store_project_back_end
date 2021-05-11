@@ -1,1 +1,1 @@
-Select * from article where article.id = {{articleId}}
+Select * from product where id = {{id}}
