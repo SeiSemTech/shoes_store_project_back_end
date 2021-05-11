@@ -1,29 +1,59 @@
 from fastapi import APIRouter, HTTPException
 from database.mysql import execute_query
-from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED
+from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from fastapi.responses import JSONResponse
-from interfaces.articles import Product
+
+from interfaces.articles import *
+from fastapi import APIRouter, HTTPException, Depends
+from internal.auth.auth_bearer import JWTBearer
 
 app_article = APIRouter()
 
+
 @app_article.post(
-    path='/create',
+    path='/create_category',
     status_code=201,
     tags=['Article'],
-    summary="Create article in SQL database"
+    summary="Create article in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
+async def create_category(request: Category):
+    execute_query("create_category.sql", False, **request.dict())
+    return ""
 
 
+@app_article.post(
+    path='/create_product',
+    status_code=201,
+    tags=['Article'],
+    summary="Create product in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
+)
+async def create_product(request: Product):
+    execute_query("create_product.sql", False, **request.dict())
+    return ""
+
+
+@app_article.post(
+    path='/create_configuration',
+    status_code=201,
+    tags=['Article'],
+    summary="Create configuration in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
+)
+async def create_configuration(request: Configuration):
+    execute_query("create_configuration.sql", False, **request.dict())
+    return ""
 
 #Función para traer todos los artículos del sistema // David
 @app_article.get(
-    path='/read',
+    path='/get_articles',
     status_code=200,
     tags=['Article'],
-    summary="Read articles in SQL database"
+    summary="Read articles in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-async def getAllArticles():
-
+async def get_all_articles():
     data = execute_query(
         query_name="get_all_articles.sql",
         fetch_data=True,

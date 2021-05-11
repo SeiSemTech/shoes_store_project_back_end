@@ -21,4 +21,3 @@ class NormalUserRegister(BaseModel):
     name: str
     email: str
     phone: str
-

@@ -1,0 +1,2 @@
+INSERT INTO CONFIGURATION (name, subConfiguratuion, extraPrice, minConfiguration, maxConfiguration) VALUES
+({{ name }}, {{ subConfiguratuion }}, {{ extraPrice }}, {{ minConfiguration }}, {{ maxConfiguration }});

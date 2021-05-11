@@ -1,0 +1,2 @@
+INSERT INTO PRODUCT (name, image, price, status, description, stockQuantity, categoryId) VALUES
+({{ name }}, {{ image }}, {{ price }}, {{ status }}, {{ description }}, {{ stockQuantity }}, {{ categoryId }});
