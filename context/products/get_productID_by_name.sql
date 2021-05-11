@@ -1,0 +1,1 @@
+SELECT id FROM product WHERE product.name = {{ name }}

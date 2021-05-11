@@ -1,0 +1,1 @@
+SELECT status FROM category WHERE category.id = {{ id }}
