@@ -20,19 +20,25 @@ app_product = APIRouter()
 )
 async def create_category(request: Category):
 
-    query_path = path.join("products", "get_category_by_name.sql")
+    query_path = path.join("products", "get_categoryID_by_name.sql")
     category_id = execute_query(query_path, True, **request.dict())
     #VALIDATE IF THE CATEGORY EXIST
     if len(category_id) > 0:
         query_path = path.join("products", "get_category_status_by_id.sql")
-        status=execute_query(query_path, True, **request.dict())
+        status=execute_query(query_path, True, **category_id)
         #IF THE CATEGORY EXIST, THE STATUS IS VALIDATED TO CHANGE THE STATUS IN CASE IT IS DISABLED
         if status[0] == "enabled":
             response = jsonable_encoder({
             "message": "already exist"
             })
+        #update status to enable if the category exist but it is disabled
         else:
-            #update status to enable
+            query_path = path.join("products", "update_category_satatus.sql")
+            execute_query(query_path, False, **request.dict())
+            response = jsonable_encoder({
+                "message": "Re-activated"
+            })
+            
     #IF THE CATEGORY DOES NOT EXIST, IT IS CREATED
     else:
         query_path = path.join("products", "create_category.sql")
@@ -41,7 +47,7 @@ async def create_category(request: Category):
                 "message": "success"
             })
 
-
+    #Return message
     return JSONResponse(content=response)
     
 
@@ -54,9 +60,38 @@ async def create_category(request: Category):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product(request: Product):
-    query_path = path.join("products", "create_product.sql")
-    execute_query(query_path, False, **request.dict())
-    return ""
+
+    query_path = path.join("products", "get_productID_by_name.sql")
+    product_id = execute_query(query_path, True, **request.dict())
+
+    if len(product_id) > 0:
+        query_path = path.join("products", "get_product_status_by_id.sql")
+        status=execute_query(query_path, True, **category_id)
+        #IF THE PRODUCT EXIST, THE STATUS IS VALIDATED TO CHANGE THE STATUS IN CASE IT IS DISABLED
+        if status[0] == "enabled":
+            response = jsonable_encoder({
+            "message": "already exist"
+            })
+        #update status to enable if the category exist but it is disabled
+        else:
+            query_path = path.join("products", "update_product_satatus.sql")
+            execute_query(query_path, False, **request.dict())
+            response = jsonable_encoder({
+                "message": "Re-activated"
+            })
+            
+    #IF THE CATEGORY DOES NOT EXIST, IT IS CREATED
+    else:
+        query_path = path.join("products", "create_product.sql")
+        execute_query(query_path, False, **request.dict())
+        response = jsonable_encoder({
+                "message": "success"
+            })
+
+    #Return message
+    return JSONResponse(content=response)
+
+
 
 
 @app_product.post(

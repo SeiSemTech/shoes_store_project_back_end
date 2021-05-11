@@ -1,0 +1,1 @@
+SELECT status FROM product WHERE product.id = {{ id }}
