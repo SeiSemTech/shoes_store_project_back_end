@@ -47,6 +47,7 @@ async def create_configuration(request: Configuration):
     execute_query(query_path, False, **request.dict())
     return ""
 
+
 #Función para traer todos los artículos del sistema // David
 @app_article.get(
     path='/get_articles',
@@ -56,11 +57,10 @@ async def create_configuration(request: Configuration):
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
 async def get_all_articles():
-    query_path = path.join("articles", "get_all_articles.sql")
+    query_path = path.join("articles", "get_article_by_id.sql")
     data = execute_query(
-        query_name="get_all_articles.sql",
-        fetch_data=True,
-        #**request.dict()
+        query_name=query_path,
+        fetch_data=True
     )
 
     if len(data) > 0:
