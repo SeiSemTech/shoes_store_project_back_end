@@ -1,3 +1,4 @@
+from os import path
 from database.mysql import execute_query
 from starlette.status import HTTP_404_NOT_FOUND
 
@@ -16,7 +17,8 @@ app_article = APIRouter()
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_category(request: Category):
-    execute_query("create_category.sql", False, **request.dict())
+    query_path = path.join("articles", "create_category.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -28,7 +30,8 @@ async def create_category(request: Category):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product(request: Product):
-    execute_query("create_product.sql", False, **request.dict())
+    query_path = path.join("articles", "create_product.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -40,7 +43,8 @@ async def create_product(request: Product):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_configuration(request: Configuration):
-    execute_query("create_configuration.sql", False, **request.dict())
+    query_path = path.join("articles", "create_configuration.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -52,7 +56,8 @@ async def create_configuration(request: Configuration):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product_configuration(request: ProductConfiguration):
-    execute_query("create_product_configuration.sql", False, **request.dict())
+    query_path = path.join("articles", "create_product_configuration.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -90,7 +95,8 @@ async def delete_product(request: Product):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def delete_configuration(request: Configuration):
-    execute_query("delete_configuration.sql", False, **request.dict())
+    query_path = path.join("articles", "delete_configuration.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -102,7 +108,8 @@ async def delete_configuration(request: Configuration):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def delete_product_configuration(request: ProductConfiguration):
-    execute_query("delete_product_configuration.sql", False, **request.dict())
+    query_path = path.join("articles", "delete_product_configuration.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -115,14 +122,15 @@ async def delete_product_configuration(request: ProductConfiguration):
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
 async def get_all_articles():
+    query_path = path.join("articles", "get_all_articles.sql")
     data = execute_query(
-        query_name="get_all_articles.sql",
+        query_name=query_path,
         fetch_data=True
     )
 
     if len(data) > 0:
         return {
-            "articles": data  # TODO RETURN TOKEN
+            "articles": data
         }
     else:
         return HTTPException(

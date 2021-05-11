@@ -1,3 +1,4 @@
+from os import path
 from fastapi import APIRouter, HTTPException
 from interface.actors import NormalUserRegister
 from database.mysql import execute_query
@@ -15,11 +16,11 @@ app_user = APIRouter()
     summary="Create user in SQL database"
 )
 async def create_users(request: NormalUserRegister):
-
+    query_path = path.join("users", "user_email.sql")
     user = request.dict()
 
     email = execute_query(
-        query_name='user_email.sql',
+        query_name=query_path,
         fetch_data=True,
         **{'email': user['email']}
     )
