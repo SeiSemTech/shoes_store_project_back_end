@@ -25,9 +25,9 @@ async def create_category(request: Category):
     #VALIDATE IF THE CATEGORY EXIST
     if len(category_id) > 0:
         query_path = path.join("products", "get_category_status_by_id.sql")
-        status=execute_query(query_path, True, **category_id)
+        status=execute_query(query_path, fetch_one=True, **category_id)
         #IF THE CATEGORY EXIST, THE STATUS IS VALIDATED TO CHANGE THE STATUS IN CASE IT IS DISABLED
-        if status[0] == "enabled":
+        if status["status"] == "enabled":
             response = jsonable_encoder({
             "message": "already exist"
             })
@@ -66,9 +66,9 @@ async def create_product(request: Product):
 
     if len(product_id) > 0:
         query_path = path.join("products", "get_product_status_by_id.sql")
-        status=execute_query(query_path, True, **category_id)
+        status=execute_query(query_path, fetch_one=True,, **category_id)
         #IF THE PRODUCT EXIST, THE STATUS IS VALIDATED TO CHANGE THE STATUS IN CASE IT IS DISABLED
-        if status[0] == "enabled":
+        if status["status"] == "enabled":
             response = jsonable_encoder({
             "message": "already exist"
             })
