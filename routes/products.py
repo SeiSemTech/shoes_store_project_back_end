@@ -1,3 +1,4 @@
+from os import path
 from database.mysql import execute_query
 from starlette.status import HTTP_404_NOT_FOUND
 
@@ -16,7 +17,8 @@ app_product = APIRouter()
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_category(request: Category):
-    execute_query("create_category.sql", False, **request.dict())
+    query_path = path.join("products", "create_category.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -28,7 +30,8 @@ async def create_category(request: Category):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product(request: Product):
-    execute_query("create_product.sql", False, **request.dict())
+    query_path = path.join("products", "create_product.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 
@@ -40,7 +43,8 @@ async def create_product(request: Product):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_configuration(request: Configuration):
-    execute_query("create_configuration.sql", False, **request.dict())
+    query_path = path.join("products", "create_configuration.sql")
+    execute_query(query_path, False, **request.dict())
     return ""
 
 #Función para traer todos los artículos del sistema // David
@@ -52,10 +56,10 @@ async def create_configuration(request: Configuration):
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
 async def get_all_products():
+    query_path = path.join("products", "get_all_products.sql")
     data = execute_query(
-        query_name="get_all_products.sql",
-        fetch_data=True,
-        #**request.dict()
+        query_name=query_path,
+        fetch_data=True
     )
 
     if len(data) > 0:
@@ -68,17 +72,20 @@ async def get_all_products():
             detail="No products have been published"
         )
 
+
 #Función para llamar un artículo en el sistema por el Id del mismo //David
 @app_product.get(
-path='/read',
-status_code=200,
-tags=['Product'],
-summary="Read product by ID in SQL database"
+    path='/read',
+    status_code=200,
+    tags=['Product'],
+    summary="Read product by ID in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-async def getProductsXId(request: id):
+async def get_products_by_id(request: int):
+    query_path = path.join("products", "get_products_by_id.sql")
 
     data = execute_query(
-        query_name="get_products_by_id.sql",
+        query_name=query_path,
         fetch_data=True,
         **request.dict()
     )
