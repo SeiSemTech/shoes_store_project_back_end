@@ -1,9 +1,7 @@
-from fastapi import APIRouter, HTTPException
 from database.mysql import execute_query
-from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED, HTTP_404_NOT_FOUND
-from fastapi.responses import JSONResponse
+from starlette.status import HTTP_404_NOT_FOUND
 
-from interfaces.articles import *
+from interface.articles import *
 from fastapi import APIRouter, HTTPException, Depends
 from internal.auth.auth_bearer import JWTBearer
 

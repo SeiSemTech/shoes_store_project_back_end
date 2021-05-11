@@ -32,6 +32,38 @@
 
 `uvicorn app:app --reload --port 5000`
 
+## Deployment
+
+- For development:
+
+To build docker
+
+`docker build . -t zapacommerce.azurecr.io/seisemtechshoesstoreprojectbackend:development`
+
+To push docker
+
+`docker push zapacommerce.azurecr.io/seisemtechshoesstoreprojectbackend:development`
+
+To test docker locally
+
+`docker run -it -p 80:5000 zapacommerce.azurecr.io/seisemtechshoesstoreprojectbackend:development`
+
+
+- For production:
+ 
+To build docker
+
+`docker build . -t zapacommerce.azurecr.io/seisemtechshoesstoreprojectbackend:latest`
+
+To push docker
+
+`docker push zapacommerce.azurecr.io/seisemtechshoesstoreprojectbackend:latest`
+
+To test docker locally
+
+`docker run -it -p 80:8000 zapacommerce.azurecr.io/seisemtechshoesstoreprojectbackend:latest`
+
+
 ## Integrantes:
 
 -
