@@ -1,18 +1,18 @@
 from database.mysql import execute_query
 from starlette.status import HTTP_404_NOT_FOUND
 
-from interface.articles import *
+from interface.products import *
 from fastapi import APIRouter, HTTPException, Depends
 from internal.auth.auth_bearer import JWTBearer
 
-app_article = APIRouter()
+app_product = APIRouter()
 
 
-@app_article.post(
+@app_product.post(
     path='/create_category',
     status_code=201,
-    tags=['Article'],
-    summary="Create article in SQL database",
+    tags=['product'],
+    summary="Create product in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_category(request: Category):
@@ -20,10 +20,10 @@ async def create_category(request: Category):
     return ""
 
 
-@app_article.post(
+@app_product.post(
     path='/create_product',
     status_code=201,
-    tags=['Article'],
+    tags=['Product'],
     summary="Create product in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -32,10 +32,10 @@ async def create_product(request: Product):
     return ""
 
 
-@app_article.post(
+@app_product.post(
     path='/create_configuration',
     status_code=201,
-    tags=['Article'],
+    tags=['Product'],
     summary="Create configuration in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -44,51 +44,51 @@ async def create_configuration(request: Configuration):
     return ""
 
 #Función para traer todos los artículos del sistema // David
-@app_article.get(
-    path='/get_articles',
+@app_product.get(
+    path='/get_products',
     status_code=200,
-    tags=['Article'],
-    summary="Read articles in SQL database",
+    tags=['Product'],
+    summary="Read products in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-async def get_all_articles():
+async def get_all_products():
     data = execute_query(
-        query_name="get_all_articles.sql",
+        query_name="get_all_products.sql",
         fetch_data=True,
         #**request.dict()
     )
 
     if len(data) > 0:
         return {
-            "articles": data  # TODO RETURN TOKEN
+            "products": data  # TODO RETURN TOKEN
         }
     else:
         return HTTPException(
             status_code=HTTP_404_NOT_FOUND,
-            detail="No articles have been published"
+            detail="No products have been published"
         )
 
 #Función para llamar un artículo en el sistema por el Id del mismo //David
-@app_article.get(
+@app_product.get(
 path='/read',
 status_code=200,
-tags=['Article'],
-summary="Read article by ID in SQL database"
+tags=['Product'],
+summary="Read product by ID in SQL database"
 )
-async def getArticlesXId(request: ArticleId):
+async def getProductsXId(request: id):
 
     data = execute_query(
-        query_name="get_articles_by_id.sql",
+        query_name="get_products_by_id.sql",
         fetch_data=True,
         **request.dict()
     )
 
     if len(data) > 0:
         return {
-            "articles": data  # TODO RETURN TOKEN
+            "products": data  # TODO RETURN TOKEN
         }
     else:
         return HTTPException(
             status_code=HTTP_404_NOT_FOUND,
-            detail="No articles have been published"
+            detail="No products have been published"
         )
