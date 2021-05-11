@@ -75,14 +75,14 @@ async def get_all_products():
 
 #Función para llamar un artículo en el sistema por el Id del mismo //David
 @app_product.get(
-    path='/read',
+    path='/get_product_by_id',
     status_code=200,
     tags=['Product'],
     summary="Read product by ID in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-async def get_products_by_id(request: ProductId):
-    query_path = path.join("products", "get_products_by_id.sql")
+async def get_product_by_id(request: ProductId):
+    query_path = path.join("products", "get_product_by_id.sql")
 
     data = execute_query(
         query_name=query_path,
@@ -91,7 +91,7 @@ async def get_products_by_id(request: ProductId):
     )
     if len(data) > 0:
         return {
-            "products": data  # TODO RETURN TOKEN
+            "product": data  # TODO RETURN TOKEN
         }
     else:
         return HTTPException(
