@@ -1,2 +1,2 @@
-INSERT INTO PRODUCT (name, image, price, status, description, stockQuantity, categoryId) VALUES
-({{ name }}, {{ image }}, {{ price }}, {{ status }}, {{ description }}, {{ stockQuantity }}, {{ categoryId }});
+INSERT INTO PRODUCT (name, status, image, price, description, categoryId) VALUES
+({{ name }}, {{ status }}, {{ image }}, {{ price }}, {{ description }}, {{ categoryId }});

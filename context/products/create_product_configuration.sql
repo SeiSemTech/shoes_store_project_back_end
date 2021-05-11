@@ -1,2 +1,2 @@
-INSERT INTO PRODUCT_CONFIGURATION (productId, configurationId, configDisplayOrder, subConfigDisplayOrder) VALUES
-({{ productId }}, {{ configurationId }}, {{ configDisplayOrder }}, {{ subConfigDisplayOrder }});
+INSERT INTO PRODUCT_CONFIGURATION (product_id, configuration_id, config_display_order, sub_config_display_order, stock) VALUES
+({{ product_id }}, {{ configuration_id }}, {{ config_display_order }}, {{ sub_config_display_order }});

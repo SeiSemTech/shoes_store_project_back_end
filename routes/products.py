@@ -5,6 +5,8 @@ from starlette.status import HTTP_404_NOT_FOUND
 from interface.products import *
 from fastapi import APIRouter, HTTPException, Depends
 from internal.auth.auth_bearer import JWTBearer
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 app_product = APIRouter()
 
@@ -17,9 +19,31 @@ app_product = APIRouter()
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_category(request: Category):
-    query_path = path.join("products", "create_category.sql")
-    execute_query(query_path, False, **request.dict())
-    return ""
+
+    query_path = path.join("products", "get_category_by_name.sql")
+    category_id = execute_query(query_path, True, **request.dict())
+    #VALIDATE IF THE CATEGORY EXIST
+    if len(category_id) > 0:
+        query_path = path.join("products", "get_category_status_by_id.sql")
+        status=execute_query(query_path, True, **request.dict())
+        #IF THE CATEGORY EXIST, THE STATUS IS VALIDATED TO CHANGE THE STATUS IN CASE IT IS DISABLED
+        if status[0] == "enabled":
+            response = jsonable_encoder({
+            "message": "already exist"
+            })
+        else:
+            #update status to enable
+    #IF THE CATEGORY DOES NOT EXIST, IT IS CREATED
+    else:
+        query_path = path.join("products", "create_category.sql")
+        execute_query(query_path, False, **request.dict())
+        response = jsonable_encoder({
+                "message": "success"
+            })
+
+
+    return JSONResponse(content=response)
+    
 
 
 @app_product.post(
@@ -99,3 +123,52 @@ async def get_products_by_id(request: int):
             status_code=HTTP_404_NOT_FOUND,
             detail="No products have been published"
         )
+
+
+#DELETE METHODS 
+
+@app_article.post(
+    path='/delete_category',
+    status_code=201,
+    tags=['Article'],
+    summary="Delete category in SQL database"
+)
+
+async def delete_catefory(request: Category):
+    
+    execute_query("disable_category.sql", False, **request.dict())
+    return ""
+
+@app_article.post(
+    path='/delete_product',
+    status_code=201,
+    tags=['Article'],
+    summary="Delete product in SQL database"
+)
+
+async def delete_product(request: Product):
+
+    execute_query("disable_product.sql", False, **request.dict())
+    return ""
+
+@app_article.post(
+    path='/delete_configuration',
+    status_code=201,
+    tags=['Article'],
+    summary="Delete configuration in SQL database"
+)
+async def delete_configuration(request: Configuration):
+
+    execute_query("delete_configuration.sql", False, **request.dict())
+    return ""
+
+@app_article.post(
+    path='/delete_productConfiguration',
+    status_code=201,
+    tags=['Article'],
+    summary="Delete product configuration in SQL database"
+)
+async def delete_ProductConfiguration(request: ProductConfiguration):
+
+    execute_query("delete_ProductConfiguration.sql", False, **request.dict())
+    return ""

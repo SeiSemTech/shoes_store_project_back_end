@@ -1,2 +1,2 @@
-INSERT INTO CATEGORY (name, status, displayOrder, image) VALUES
-({{ name }}, {{ status }}, {{ displayOrder }}, {{ image }});
+INSERT INTO CATEGORY (name, status, display_order) VALUES
+({{ name }}, {{ status }}, {{ display_order }});
