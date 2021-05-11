@@ -1,3 +1,4 @@
+from os import path
 from fastapi import APIRouter, HTTPException, Depends
 from interface.auth import LoginUser
 from database.mysql import execute_query
@@ -22,8 +23,9 @@ async def login(request: LoginUser):
     Authenticate user via OAUTH2 and validate if user
     have access to the application.
     """
+    query_path = path.join("auth", "login.sql")
     data = execute_query(
-        query_name="login.sql",
+        query_name=query_path,
         fetch_one=True,
         **request.dict()
     )
@@ -51,7 +53,8 @@ async def reset_password(request: LoginUser):
     """
     Validate in database if user exist and change password
     """
-    data = execute_query("get_user_id_by_email.sql", fetch_one=True, **request.dict())
+    query_path = path.join("auth", "get_user_id_by_email.sql")
+    data = execute_query(query_path, fetch_one=True, **request.dict())
     execute_query("update_password.sql", **request.dict(), **data)
 
     response = jsonable_encoder({
