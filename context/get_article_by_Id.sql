@@ -1,0 +1,1 @@
+Select * from article where article.id = {{articleId}}
