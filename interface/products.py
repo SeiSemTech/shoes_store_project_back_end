@@ -16,7 +16,7 @@ class Product(BaseModel):
     description: str
     category_id: int
 
-class ProductId(BaseModel):
+class ProductId(BaseModel): # Interface creada para consulta
     id: int
 
 class Configuration(BaseModel):
