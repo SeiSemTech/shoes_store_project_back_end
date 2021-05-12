@@ -13,7 +13,7 @@ app_product = APIRouter()
 @app_product.post(
     path='/create_category',
     status_code=201,
-    tags=['Category'],
+    tags=['Create Category'],
     summary="Create category in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -53,7 +53,7 @@ async def create_category(request: Category):
 @app_product.post(
     path='/create_product',
     status_code=201,
-    tags=['Product'],
+    tags=['Create Product'],
     summary="Create product in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -91,7 +91,7 @@ async def create_product(request: Product):
 @app_product.post(
     path='/create_configuration',
     status_code=201,
-    tags=['Product'],
+    tags=['Create Configuration'],
     summary="Create configuration in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -119,7 +119,7 @@ async def create_configuration(request: Configuration):
 @app_product.post(
     path='/create_product_configuration',
     status_code=201,
-    tags=['Product'],
+    tags=['Create Product Configuration'],
     summary="Create Product Configuration in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -138,7 +138,7 @@ async def create_product_configuration(request: ProductConfiguration):
 @app_product.get(
     path='/get_products',
     status_code=200,
-    tags=['Product'],
+    tags=['Read Product'],
     summary="Read products in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
@@ -164,7 +164,7 @@ async def get_all_products():
 @app_product.get(
     path='/get_activated_products',
     status_code=200,
-    tags=['Product'],
+    tags=['Read Product'],
     summary="Read products in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
@@ -191,7 +191,7 @@ async def get_all_products():
 @app_product.get(
     path='/get_product_by_id/{product_id}',
     status_code=200,
-    tags=['Product'],
+    tags=['Read Product'],
     summary="Read product by ID in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
@@ -219,7 +219,7 @@ async def get_product_by_id(product_id: int):
 @app_product.get(
     path='/get_categories',
     status_code=200,
-    tags=['Product'],
+    tags=['Read Categories'],
     summary="Read categories in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
@@ -246,7 +246,7 @@ async def get_all_categories():
 @app_product.post(
     path='/delete_category',
     status_code=201,
-    tags=['Article'],
+    tags=['Delete Category'],
     summary="Delete category in SQL database"
 )
 
@@ -275,7 +275,7 @@ async def delete_category(request: Category):
 @app_product.post(
     path='/delete_product',
     status_code=201,
-    tags=['Article'],
+    tags=['Delete Product'],
     summary="Delete product in SQL database"
 )
 
@@ -304,7 +304,7 @@ async def delete_product(request: Product):
 @app_product.post(
     path='/delete_configuration',
     status_code=201,
-    tags=['Article'],
+    tags=['Delete Configuration'],
     summary="Delete configuration in SQL database"
 )
 async def delete_configuration(request: Configuration):
@@ -330,7 +330,7 @@ async def delete_configuration(request: Configuration):
 @app_product.post(
     path='/delete_productConfiguration',
     status_code=201,
-    tags=['Article'],
+    tags=['Delete Product Configuration'],
     summary="Delete product configuration in SQL database"
 )
 async def delete_ProductConfiguration(request: ProductConfiguration):
@@ -351,7 +351,7 @@ async def delete_ProductConfiguration(request: ProductConfiguration):
 @app_product.post(
     path='/update_product',
     status_code=200,
-    tags=['Product'],
+    tags=['Update Product'],
     summary="Update product in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -365,7 +365,7 @@ async def update_product(request: Product):
 @app_product.post(
     path='/update_category',
     status_code=200,
-    tags=['Product'],
+    tags=['Update Category'],
     summary="Update category in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -379,7 +379,7 @@ async def update_category(request: Category):
 @app_product.post(
     path='/update_configuration',
     status_code=200,
-    tags=['Product'],
+    tags=['Update Configuration'],
     summary="Update configuration in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -393,7 +393,7 @@ async def update_configuration(request: Configuration):
 @app_product.post(
     path='/update_product_configuration',
     status_code=200,
-    tags=['Product'],
+    tags=['Update Product Configuration'],
     summary="Update Product Configuration in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
@@ -413,7 +413,7 @@ async def update_product_configuration(request: Product):
 @app_product.get(
     path='/get_configuration_by_id/{configuration_id}',
     status_code=200,
-    tags=['Configuration'],
+    tags=['Read Configuration'],
     summary="Read configuration by ID in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
@@ -440,7 +440,7 @@ async def get_configuration_by_id(configuration_id: int):
 @app_product.get(
     path='/get_all_configurations',
     status_code=200,
-    tags=['Configuration'],
+    tags=['Read Configuration'],
     summary="Read configurations in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
@@ -469,7 +469,7 @@ async def get_all_configurations():
 @app_product.get(
     path='/get_product_configuration_by_id/{product_configuration_id}',
     status_code=200,
-    tags=['Configuration'],
+    tags=['Read Product Configuration'],
     summary="Read product configuration by ID in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
@@ -496,7 +496,7 @@ async def get_product_configuration_by_id(product_configuration_id: int):
 @app_product.get(
     path='/get_all_product_configurations',
     status_code=200,
-    tags=['Configuration'],
+    tags=['Read Product Configuration'],
     summary="Read product configurations in SQL database",
     dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
