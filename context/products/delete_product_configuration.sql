@@ -1,0 +1,1 @@
+DELETE FROM product_configuration WHERE product_configuration.id = {{ id }}

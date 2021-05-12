@@ -1,0 +1,1 @@
+SELECT id FROM product_configuration where product_configuration.product_id = {{ id }}

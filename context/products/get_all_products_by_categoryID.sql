@@ -1,0 +1,1 @@
+SELECT id FROM product where product.category_id = {{ id }}

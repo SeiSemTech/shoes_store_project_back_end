@@ -1,1 +1,1 @@
-UPDATE CATEGORY set status = {{status}} where id = {{id}};
+UPDATE CATEGORY set status = {{status}} where category.id = {{id}};

@@ -1,0 +1,1 @@
+DELETE FROM configuration WHERE configuration.id = {{ id }}

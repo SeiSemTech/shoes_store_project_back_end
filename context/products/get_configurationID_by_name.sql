@@ -1,0 +1,1 @@
+SELECT id FROM configuration WHERE configuration.name = {{ name }}
