@@ -405,7 +405,10 @@ async def update_product_configuration(request: Product):
 # FIN FUNCIONES UPDATE GENERALES
 #
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef879c704aa7ac819b66d25146df77a4dcc20b3c
 #
 # INICIO CONSULTAS CONFIGURATION Y PRODUCT_CONFIGURATION
 #
@@ -517,5 +520,4 @@ async def get_all_product_configurations():
         return HTTPException(
             status_code=HTTP_404_NOT_FOUND,
             detail="No product configurations have been published"
-        )       
-
+        )
