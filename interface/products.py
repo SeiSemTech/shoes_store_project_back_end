@@ -1,14 +1,16 @@
+from typing import Optional
 from pydantic import BaseModel
 
+
 class Category(BaseModel):
-    id: int
+    id: Optional[int] = None
     name: str
     status: int
     display_order: int
 
 
 class Product(BaseModel):
-    id: int
+    id: Optional[int] = None
     name: str
     status: int
     image: str
@@ -19,14 +21,14 @@ class Product(BaseModel):
 
 
 class Configuration(BaseModel):
-    id: int
+    id: Optional[int] = None
     name: str
     sub_configuratuion: str
     extra_price: int
 
 
 class ProductConfiguration(BaseModel):
-    id: int
+    id: Optional[int] = None
     product_id: int
     configuration_id: int
     config_display_order: int

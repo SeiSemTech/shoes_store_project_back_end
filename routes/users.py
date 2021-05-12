@@ -6,10 +6,10 @@ from starlette.status import HTTP_409_CONFLICT, HTTP_201_CREATED
 from fastapi.responses import JSONResponse
 
 
-app_user = APIRouter()
+app_users = APIRouter()
 
 
-@app_user.post(
+@app_users.post(
     path='/create',
     status_code=201,
     tags=['Usuarios'],

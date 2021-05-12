@@ -180,18 +180,18 @@ INSERT INTO category (name, status, display_order) VALUES
 INSERT INTO product (name, status, image, price, description, category_id, display_order) VALUES
   ('Zapatillas Nike', 1, 'Url Imagen', 150000, 'Hermosa Zapatilla Nike con tecnologia de Running', 1, 1),
   ('Zapatillas Adidas', 1, 'Url Imagen', 220000, 'Hermosa Zapatilla Adidas con tecnologia ultraboost', 1, 2),
-  ('Zapatillas Puma', 0, 'Url Imagen', 280000, 'Hermosa Zapatilla Puma para salto', 0, 3);
+  ('Zapatillas Puma', 0, 'Url Imagen', 280000, 'Hermosa Zapatilla Puma para salto', 2, 3);
 
 INSERT INTO configuration (name, sub_configuratuion, extra_price) VALUES
   ('Talla', 38, 0),
   ('Talla', 39, 10000),
   ('Talla', 40, 10000),
   ('Talla', 41, 12000),
-  ('Color', Azul, 5000),
-  ('Color', Blanco, 0),
-  ('Color', Negro, 0),
-  ('Color', Rojo, 5000),
-  ('Color', Verde, 5000);
+  ('Color', 'Azul', 5000),
+  ('Color', 'Blanco', 0),
+  ('Color', 'Negro', 0),
+  ('Color', 'Rojo', 5000),
+  ('Color', 'Verde', 5000);
 
 INSERT INTO product_configuration (product_id, configuration_id, config_display_order, sub_config_display_order, stock) VALUES
  -- Producto 1
