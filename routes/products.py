@@ -1,11 +1,12 @@
 from os import path
 from database.mysql import execute_query
-from starlette.status import HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
+from starlette.status import HTTP_404_NOT_FOUND, HTTP_409_CONFLICT, HTTP_424_FAILED_DEPENDENCY
 from interface.products import *
 from fastapi import APIRouter, HTTPException, Depends
 from internal.auth.auth_bearer import JWTBearer
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from pymysql.err import IntegrityError
 
 app_product = APIRouter()
 
@@ -244,104 +245,109 @@ async def get_all_categories():
 #DELETE METHODS 
 
 @app_product.post(
-    path='/delete_category',
+    path='/delete_category/{category_id}',
     status_code=201,
     tags=['Article'],
     summary="Delete category in SQL database"
 )
+async def delete_category(category_id: int):
 
-async def delete_category(request: Category):
-
-    category_dic= request.dict()
+    category_dict = {'id': category_id, 'status': 0}
     query_path = path.join("products", "update_category_status.sql")
-    execute_query(query_path, False, **category_dic)
+    try:
+        execute_query(query_path, False, **category_dict)
+        response = jsonable_encoder({
+            "message": "success"
+        })
+    except:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No categories have been found"
+        )
 
-    #query_path = path.join("products", "get_all_products_by_categoryID.sql")
-    #products = execute_query(query_path, True, **category_dic)
-    #update_product_dictionary = { "status" : 0}
-    #if(len(products) > 0):
-    #    for i in products:
-    #        update_product_dictionary["id"]= i
-    #        query_path = path.join("products", "update_product_status.sql")
-    #        execute_query(query_path, False, **update_product_dictionary)
-
-    response = jsonable_encoder({
-                "message": "success"
-            })
-
-    #Return message
+    # Return message
     return JSONResponse(content=response)
 
 @app_product.post(
-    path='/delete_product',
+    path='/delete_product/{product_id}',
     status_code=201,
     tags=['Article'],
     summary="Delete product in SQL database"
 )
-
-async def delete_product(request: Product):
-
+async def delete_product(product_id: int):
     query_path = path.join("products", "update_product_status.sql")
-    execute_query(query_path, False, **request.dict())
-    
-    #query_path = path.join("products", "get_all_product_configurationID_by_productID.sql")
-    #product_configuration = execute_query(query_path, True, **request.dict())
+    product_dict = {'id': product_id, 'status': 0}
+    try:
+        execute_query(query_path, False, **product_dict)
 
-    #update_product_configuration_dictionary = { "status" : 0}
-    #if(len(product_configuration) > 0):
-    #    for i in product_configuration:
-    #        update_product_configuration_dictionary["id"]= i
-    #        query_path = path.join("products", "delete_product_configuration.sql")
-    #        execute_query(query_path, False, **i.dict())
-    
-    response = jsonable_encoder({
-                "message": "success"
-            })
+        response = jsonable_encoder({
+            "message": "success"
+        })
+    except:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products have been found"
+        )
 
-    #Return message
+    # Return message
     return JSONResponse(content=response)
 
 @app_product.post(
-    path='/delete_configuration',
+    path='/delete_configuration/{configuration_id}',
     status_code=201,
     tags=['Article'],
     summary="Delete configuration in SQL database"
 )
-async def delete_configuration(request: Configuration):
-
+async def delete_configuration(configuration_id: int):
     query_path = path.join("products", "delete_configuration.sql")
-    execute_query(query_path, False, **request.dict())
+    configuration_id_dict = {'id': configuration_id}
 
-    #query_path = path.join("products", "get_all_product_configurationID_by_configurationID.sql")
-    #product_configuration = execute_query(query_path, True, **request.dict())
-    #if(len(product_configuration) > 0):
-    #    for i in product_configuration:
-    #        query_path = path.join("products", "delete_product_configuration.sql")
-    #        execute_query(query_path, False, **i.dict())
-
-
-    response = jsonable_encoder({
-                "message": "success"
-            })
+    try:
+        execute_query(query_path, False, **configuration_id_dict)
+        response = jsonable_encoder({
+            "message": "success"
+        })
+    except IntegrityError:
+        return HTTPException(
+            status_code=HTTP_424_FAILED_DEPENDENCY,
+            detail="Database error, probably foreing key dependency error"
+        )
+    except:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products have been found"
+        )
 
     #Return message
     return JSONResponse(content=response)
 
 @app_product.post(
-    path='/delete_productConfiguration',
+    path='/delete_product_configuration/{product_configuration_id}',
     status_code=201,
     tags=['Article'],
     summary="Delete product configuration in SQL database"
 )
-async def delete_ProductConfiguration(request: ProductConfiguration):
+async def delete_product_configuration(product_configuration_id: int):
 
     query_path = path.join("products", "delete_product_configuration.sql")
-    execute_query(query_path, False, **request.dict())
-    response = jsonable_encoder({
-                "message": "success"
-            })
+    product_configuration_id_dict = {'id': product_configuration_id}
+    try:
+        execute_query(query_path, False, **product_configuration_id_dict)
+        response = jsonable_encoder({
+            "message": "success"
+        })
+    except IntegrityError:
+        return HTTPException(
+            status_code=HTTP_424_FAILED_DEPENDENCY,
+            detail="Database error, probably foreing key dependency error"
+        )
+    except:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products have been found"
+        )
 
-    #Return message
+    # Return message
     return JSONResponse(content=response)
 #
 # INICIO FUNCIONES UPDATE GENERALES
@@ -386,7 +392,7 @@ async def update_category(request: Category):
 async def update_configuration(request: Configuration):
     query_path = path.join("products", "update_configuration.sql")
     execute_query(query_path, False, **request.dict())
-    return ""
+    return {"message": "Operation successful"}
 
 #David - Función para actualizar PRODUCT_CONFIGURATION
 
@@ -397,10 +403,124 @@ async def update_configuration(request: Configuration):
     summary="Update Product Configuration in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
-async def update_product_configuration(request: Product):
+async def update_product_configuration(request: ProductConfiguration):
     query_path = path.join("products", "update_product_configuration.sql")
     execute_query(query_path, False, **request.dict())
-    return ""
+    return {"message": "Operation successful"}
 #
 # FIN FUNCIONES UPDATE GENERALES
 #
+
+#
+# INICIO CONSULTAS CONFIGURATION Y PRODUCT_CONFIGURATION
+#
+# CONFIGURATION
+#
+# David - Función configuración por id
+@app_product.get(
+    path='/get_configuration_by_id/{configuration_id}',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read configuration by ID in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_configuration_by_id(configuration_id: int):
+    query_path = path.join("products", "get_configuration_by_id.sql")
+    configuration_id_dict = {'id': configuration_id}
+
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True,
+        **configuration_id_dict
+    )
+    if len(data) > 0:
+        return {
+            "configuration": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No configurations have been published"
+        )
+
+# David - Función todas las configuraciones
+@app_product.get(
+    path='/get_all_configurations',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read configurations in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_all_configurations():
+    query_path = path.join("products", "get_all_configurations.sql")
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True
+    )
+
+    if len(data) > 0:
+        return {
+            "configurations": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No configurations have been published"
+        )
+
+#
+# PRODUCT_CONFIGURATION
+#
+# David- Función para traer un Product_Configuration por Id
+
+@app_product.get(
+    path='/get_product_configuration_by_id/{product_configuration_id}',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read product configuration by ID in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_product_configuration_by_id(product_configuration_id: int):
+    query_path = path.join("products", "get_product_configuration_by_id.sql")
+    product_configuration_id_dict = {'id': product_configuration_id}
+
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True,
+        **product_configuration_id_dict
+    )
+    if len(data) > 0:
+        return {
+            "product_configuration": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products configurations have been published"
+        )
+
+# David - Función todas las product_configurtions
+@app_product.get(
+    path='/get_all_product_configurations',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read product configurations in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_all_product_configurations():
+    query_path = path.join("products", "get_all_product_configurations.sql")
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True
+    )
+
+    if len(data) > 0:
+        return {
+            "product_configurations": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No product configurations have been published"
+        )
+
