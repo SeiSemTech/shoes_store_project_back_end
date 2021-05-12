@@ -410,3 +410,117 @@ async def update_product_configuration(request: ProductConfiguration):
 #
 # FIN FUNCIONES UPDATE GENERALES
 #
+
+#
+# INICIO CONSULTAS CONFIGURATION Y PRODUCT_CONFIGURATION
+#
+# CONFIGURATION
+#
+# David - Función configuración por id
+@app_product.get(
+    path='/get_configuration_by_id/{configuration_id}',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read configuration by ID in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_configuration_by_id(configuration_id: int):
+    query_path = path.join("products", "get_configuration_by_id.sql")
+    configuration_id_dict = {'id': configuration_id}
+
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True,
+        **configuration_id_dict
+    )
+    if len(data) > 0:
+        return {
+            "configuration": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No configurations have been published"
+        )
+
+# David - Función todas las configuraciones
+@app_product.get(
+    path='/get_all_configurations',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read configurations in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_all_configurations():
+    query_path = path.join("products", "get_all_configurations.sql")
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True
+    )
+
+    if len(data) > 0:
+        return {
+            "configurations": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No configurations have been published"
+        )
+
+#
+# PRODUCT_CONFIGURATION
+#
+# David- Función para traer un Product_Configuration por Id
+
+@app_product.get(
+    path='/get_product_configuration_by_id/{product_configuration_id}',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read product configuration by ID in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_product_configuration_by_id(product_configuration_id: int):
+    query_path = path.join("products", "get_product_configuration_by_id.sql")
+    product_configuration_id_dict = {'id': product_configuration_id}
+
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True,
+        **product_configuration_id_dict
+    )
+    if len(data) > 0:
+        return {
+            "product_configuration": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products configurations have been published"
+        )
+
+# David - Función todas las product_configurtions
+@app_product.get(
+    path='/get_all_product_configurations',
+    status_code=200,
+    tags=['Configuration'],
+    summary="Read product configurations in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_all_product_configurations():
+    query_path = path.join("products", "get_all_product_configurations.sql")
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True
+    )
+
+    if len(data) > 0:
+        return {
+            "product_configurations": data  # TODO RETURN TOKEN
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No product configurations have been published"
+        )
+
