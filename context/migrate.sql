@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS product (
   price int(11) NOT NULL,
   description VARCHAR(255) NOT NULL,
   category_id int(11) NOT NULL,
+  display_order int(11) NOT NULL,
   UNIQUE KEY (id)
 );
 

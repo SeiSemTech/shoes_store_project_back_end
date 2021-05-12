@@ -17,8 +17,6 @@ class Product(BaseModel):
     category_id: int
     display_order: int
 
-class ProductId(BaseModel): # Interface creada para consulta
-    id: int
 
 class Configuration(BaseModel):
     id: int
