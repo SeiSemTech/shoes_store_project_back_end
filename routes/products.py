@@ -404,7 +404,6 @@ async def update_product_configuration(request: Product):
 #
 # FIN FUNCIONES UPDATE GENERALES
 #
-
 #
 # INICIO CONSULTAS CONFIGURATION Y PRODUCT_CONFIGURATION
 #
