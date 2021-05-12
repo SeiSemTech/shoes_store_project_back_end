@@ -15,6 +15,7 @@ class Product(BaseModel):
     price: int
     description: str
     category_id: int
+    display_order: int
 
 class ProductId(BaseModel): # Interface creada para consulta
     id: int
