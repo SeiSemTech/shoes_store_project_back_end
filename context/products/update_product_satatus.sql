@@ -1,1 +1,20 @@
-UPDATE PRODUCT set status = {{status}} where product.id = {{id}};
+-- Update columna status tabla product
+--
+UPDATE PRODUCT set status = {{status}} where id = {{id}};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
