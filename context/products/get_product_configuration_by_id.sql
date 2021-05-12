@@ -1,0 +1,1 @@
+Select * from product_configuration where id = {{id}}

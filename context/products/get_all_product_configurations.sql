@@ -1,0 +1,1 @@
+Select * from product_configuration order by id desc
