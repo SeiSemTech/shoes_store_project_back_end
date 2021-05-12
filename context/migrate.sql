@@ -155,6 +155,8 @@ ALTER TABLE product_configuration
   ADD CONSTRAINT FK_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
   ADD CONSTRAINT FK_CONFIGURATION FOREIGN KEY (configuration_id) REFERENCES configuration (id);
 
+
+
 --
 -- Poblar base de datos
 --
@@ -170,5 +172,54 @@ INSERT INTO users (name, email, phone, role_id) VALUES
 INSERT INTO login (user_id, password) VALUES
   (1, 'admin'),
   (2, 'user');
+
+INSERT INTO category (name, status, display_order) VALUES
+  ('Promociones', 1, 1),
+  ('Temporada de Verano', 0, 2);
+
+INSERT INTO product (name, status, image, price, description, category_id, display_order) VALUES
+  ('Zapatillas Nike', 1, 'Url Imagen', 150000, 'Hermosa Zapatilla Nike con tecnologia de Running', 1, 1),
+  ('Zapatillas Adidas', 1, 'Url Imagen', 220000, 'Hermosa Zapatilla Adidas con tecnologia ultraboost', 1, 2),
+  ('Zapatillas Puma', 0, 'Url Imagen', 280000, 'Hermosa Zapatilla Puma para salto', 0, 3);
+
+INSERT INTO configuration (name, sub_configuratuion, extra_price) VALUES
+  ('Talla', 38, 0),
+  ('Talla', 39, 10000),
+  ('Talla', 40, 10000),
+  ('Talla', 41, 12000),
+  ('Color', Azul, 5000),
+  ('Color', Blanco, 0),
+  ('Color', Negro, 0),
+  ('Color', Rojo, 5000),
+  ('Color', Verde, 5000);
+
+INSERT INTO product_configuration (product_id, configuration_id, config_display_order, sub_config_display_order, stock) VALUES
+ -- Producto 1
+ (1, 1, 1, 1, 5),
+ (1, 2, 1, 2, 5),
+ (1, 3, 1, 3, 5),
+ (1, 4, 1, 4, 5),
+ (1, 5, 2, 1, 5),
+ (1, 6, 2, 2, 5),
+ (1, 7, 2, 3, 5),
+ (1, 8, 2, 4, 5),
+ -- Producto 2
+ (2, 1, 1, 1, 5),
+ (2, 2, 1, 2, 5),
+ (2, 3, 1, 3, 5),
+ (2, 4, 1, 4, 5),
+ (2, 5, 2, 1, 5),
+ (2, 6, 2, 2, 5),
+ (2, 7, 2, 3, 5),
+ (2, 8, 2, 4, 5),
+ -- Producto 3
+ (3, 1, 1, 1, 5),
+ (3, 2, 1, 2, 5),
+ (3, 3, 1, 3, 5),
+ (3, 4, 1, 4, 5),
+ (3, 5, 2, 1, 5),
+ (3, 6, 2, 2, 5),
+ (3, 7, 2, 3, 5),
+ (3, 8, 2, 4, 5);
 
 COMMIT;
