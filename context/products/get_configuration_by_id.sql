@@ -1,0 +1,1 @@
+Select * from configuration where id = {{id}}
