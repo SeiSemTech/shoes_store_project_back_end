@@ -17,7 +17,7 @@ class JWTBearer(HTTPBearer):
             if not credentials.scheme == "Bearer":
                 raise HTTPException(status_code=403, detail="Invalid authentication scheme.")
             if not self.verify_jwt(credentials.credentials):
-                raise HTTPException(status_code=403, detail="Not authorized.")
+                raise HTTPException(status_code=401, detail="Not authorized.")
             return credentials.credentials
         else:
             raise HTTPException(status_code=403, detail="Invalid authorization code.")
@@ -33,3 +33,13 @@ class JWTBearer(HTTPBearer):
         if payload and (len(role) == 0 or role in self.roles):
             is_valid_token = True
         return is_valid_token
+
+    @classmethod
+    def get_role(cls, jwt_token: str) -> bool:
+        role = None
+        try:
+            payload = decode_jwt(jwt_token)
+            role = payload['role']
+        except:
+            payload = None
+        return role

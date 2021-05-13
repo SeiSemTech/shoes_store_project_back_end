@@ -1,12 +1,12 @@
 from os import path
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException
 from interface.auth import LoginUser
 from database.mysql import execute_query
-from starlette.status import HTTP_404_NOT_FOUND, HTTP_200_OK
+from starlette.status import HTTP_404_NOT_FOUND
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-from internal.auth.auth_bearer import JWTBearer
+
 from internal.auth.auth_handler import sign_jwt
 
 app_auth = APIRouter()
@@ -40,24 +40,3 @@ async def login(request: LoginUser):
             status_code=HTTP_404_NOT_FOUND,
             detail="User not found or incorrect password"
         )
-
-
-@app_auth.post(
-    path='/reset_password',
-    status_code=HTTP_200_OK,
-    tags=['Authentication'],
-    summary="Reset password via authorized token",
-    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
-)
-async def reset_password(request: LoginUser):
-    """
-    Validate in database if user exist and change password
-    """
-    query_path = path.join("auth", "get_user_id_by_email.sql")
-    data = execute_query(query_path, fetch_one=True, **request.dict())
-    execute_query("update_password.sql", **request.dict(), **data)
-
-    response = jsonable_encoder({
-        "message": "password_reset"
-    })
-    return JSONResponse(content=response)

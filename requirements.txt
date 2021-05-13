@@ -13,3 +13,4 @@ pyasn1==0.4.8
 python-jose==3.2.0
 rsa==4.7.2
 bcrypt==3.2.0
+sendgrid==6.7.0

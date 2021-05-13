@@ -25,7 +25,13 @@ CREATE TABLE IF NOT EXISTS login (
   password varchar(15) NOT NULL
 );
 
--- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS password_grant (
+  user_id int(11) NOT NULL,
+  grant_key varchar(15) NOT NULL,
+  expire_at timestamp NOT NULL,
+  UNIQUE KEY (user_id)
+);
 
 --
 -- Estructura de tabla para la tabla rol
@@ -38,8 +44,6 @@ CREATE TABLE IF NOT EXISTS roles (
 );
 
 
--- --------------------------------------------------------
-
 --
 -- Estructura de tabla para la tabla users
 --
@@ -51,10 +55,9 @@ CREATE TABLE IF NOT EXISTS users (
   phone varchar(30) NOT NULL,
   role_id int(11) NOT NULL,
   is_active BOOLEAN NOT NULL DEFAULT False,
-  UNIQUE KEY (user_id)
+  UNIQUE KEY (user_id),
+  UNIQUE KEY (email)
 );
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para productos
@@ -144,6 +147,9 @@ ALTER TABLE product_configuration
 
 ALTER TABLE login
   ADD CONSTRAINT FK_LOGIN_USUARIO FOREIGN KEY (user_id) REFERENCES users (user_id);
+
+ALTER TABLE password_grant
+  ADD CONSTRAINT FK_USER_ID FOREIGN KEY (user_id) REFERENCES users (user_id);
 
 ALTER TABLE users
   ADD CONSTRAINT FK_USUARIO_ROL FOREIGN KEY (role_id) REFERENCES roles (role_id);

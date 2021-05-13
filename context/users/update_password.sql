@@ -1,1 +1,0 @@
-UPDATE LOGIN set password = {{password}} where user_id = {{user_id}};
