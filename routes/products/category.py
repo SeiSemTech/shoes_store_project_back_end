@@ -50,7 +50,7 @@ async def create_category(request: Category):
         })
 
     # Return message
-    return JSONResponse(content=response)
+    return JSONResponse(content=response, )
 
 
 # Función para traer todas las categorias del sistema

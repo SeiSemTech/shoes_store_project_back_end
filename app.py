@@ -9,7 +9,7 @@ app = FastAPI()
 if ENVIRONMENT == 'prod':
     origins = ['https://zapacommerce.web.app']
 else:
-    origins = ['https://zapacommerce-development.web.app/', 'http://localhost:4200']
+    origins = ['https://zapacommerce-development.web.app', 'http://localhost:4200']
 
 app.add_middleware(
     CORSMiddleware,

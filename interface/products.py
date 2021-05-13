@@ -23,7 +23,7 @@ class Product(BaseModel):
 class Configuration(BaseModel):
     id: Optional[int] = None
     name: str
-    sub_configuratuion: str
+    sub_configuration: str
     extra_price: int
 
 

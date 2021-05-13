@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS product (
 CREATE TABLE IF NOT EXISTS configuration (
   id int(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) NOT NULL,
-  sub_configuratuion VARCHAR(30) NOT NULL,
+  sub_configuration VARCHAR(30) NOT NULL,
   extra_price int(11),
   UNIQUE KEY (id)
 );
@@ -188,7 +188,7 @@ INSERT INTO product (name, status, image, price, description, category_id, displ
   ('Zapatillas Adidas', 1, 'Url Imagen', 220000, 'Hermosa Zapatilla Adidas con tecnologia ultraboost', 1, 2),
   ('Zapatillas Puma', 0, 'Url Imagen', 280000, 'Hermosa Zapatilla Puma para salto', 2, 3);
 
-INSERT INTO configuration (name, sub_configuratuion, extra_price) VALUES
+INSERT INTO configuration (name, sub_configuration, extra_price) VALUES
   ('Talla', 38, 0),
   ('Talla', 39, 10000),
   ('Talla', 40, 10000),
