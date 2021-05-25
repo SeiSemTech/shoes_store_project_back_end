@@ -107,6 +107,7 @@ async def get_all_product_configurations():
             detail="No product configurations have been published"
         )
 
+
 @app_product_configuration.patch(
     path='/product_configuration',
     status_code=200,

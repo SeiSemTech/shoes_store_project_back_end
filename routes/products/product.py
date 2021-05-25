@@ -130,11 +130,38 @@ async def get_product_by_id(current_id: int):
     path='/product/{current_id}',
     status_code=201,
     tags=['Product'],
-    summary="Delete product in SQL database",
+    summary="Deactivate product in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def delete_product(current_id: int):
     query_path = path.join("products", "update_product_status.sql")
+    try:
+        execute_query(query_path, False, id=current_id)
+        response = jsonable_encoder({
+            "message": "success"
+        })
+    except IntegrityError:
+        return HTTPException(
+            status_code=HTTP_424_FAILED_DEPENDENCY,
+            detail="Database error, probably foreing key dependency error"
+        )
+    except:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products have been found"
+        )
+    return JSONResponse(content=response)
+
+
+@app_product.delete(
+    path='/product/force_delete/{current_id}',
+    status_code=201,
+    tags=['Product'],
+    summary="Delete product in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
+)
+async def delete_product(current_id: int):
+    query_path = path.join("products", "product", "delete_product.sql")
     try:
         execute_query(query_path, False, id=current_id)
         response = jsonable_encoder({
