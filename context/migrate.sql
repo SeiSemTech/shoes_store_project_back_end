@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS bill (
   date date NOT NULL,
   total_quantity int(11) NOT NULL,
   total_price int(11) NOT NULL,
-  UNIQUE KEY (id_bill)
+  UNIQUE KEY (id)
 );
 --
 -- Índices para tablas volcadas
