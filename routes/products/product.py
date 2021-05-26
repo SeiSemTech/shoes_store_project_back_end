@@ -206,7 +206,7 @@ async def get_all_products(request : List[Category]):
             
 
         return {
-            "categories": categories  # TODO RETURN TOKEN
+            "categories": categories
         }
         
     else:
