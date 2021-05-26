@@ -176,8 +176,7 @@ async def update_product(request: Product):
     #dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
 
-async def get_all_products(request : List[Category]):
-   
+async def get_all_products(request : List[Category]): 
      
     query_path = path.join("products", "get_all_activated_categories.sql")
     categories = execute_query(
@@ -209,7 +208,7 @@ async def get_all_products(request : List[Category]):
         return {
             "categories": categories  # TODO RETURN TOKEN
         }
-
+        
     else:
         return HTTPException(
             status_code=HTTP_404_NOT_FOUND,
