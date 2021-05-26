@@ -17,3 +17,8 @@ class BillDescription(BaseModel):
     quantity: int
     price: float
     total: float
+
+class BillFront(BaseModel):
+    product_id: int
+    stock: int
+    price: float
