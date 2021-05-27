@@ -106,18 +106,15 @@ CREATE TABLE IF NOT EXISTS product_configuration (
 -- Tablas Bill
 --
 CREATE TABLE IF NOT EXISTS BillDescription (
-  id_bill int(11) NOT NULL AUTO_INCREMENT,
+  id_bill int(11) NOT NULL,
   id_product_config int(11) NOT NULL,
-  product_name VARCHAR(30) NOT NULL,
-  description VARCHAR(30) NOT NULL,
   quantity int(11) NOT NULL,
   price int(11) NOT NULL,
-  total int(11) NOT NULL,
-  UNIQUE KEY (id_bill)
+  UNIQUE KEY (id_bill, id_product_config)
 );
 
 CREATE TABLE IF NOT EXISTS bill (
-  id int(11) NOT NULL,
+  id int(11) NOT NULL AUTO_INCREMENT,
   id_user int(11) NOT NULL,
   date timestamp NOT NULL,
   total_quantity int(11) NOT NULL,

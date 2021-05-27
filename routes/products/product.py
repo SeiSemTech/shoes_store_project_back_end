@@ -193,17 +193,14 @@ async def update_product(request: Product):
     return {"message": "Operation successful"}
 
 
-
-
 @app_product.get(
     path='/activated_all_products',
     status_code=200,
     tags=['Product'],
     summary="Read products in SQL database",
-    #dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-
-async def get_all_products(request : List[Category]): 
+async def get_all_products():
      
     query_path = path.join("products", "get_all_activated_categories.sql")
     categories = execute_query(
@@ -219,22 +216,21 @@ async def get_all_products(request : List[Category]):
                 query_name=query_path,
                 fetch_data=True
             )
-
+            print(products)
             if len(products) > 0:
                 categories[x]["products"] = products
                 for y in range(len(products)):
                     query_path = path.join("products", "get_all_activated_products_configurations.sql")
+                    product_id = products[y]['id']
                     products_configuration = execute_query(
                         query_name=query_path,
-                        fetch_data=True
+                        fetch_data=True,
+                        product_id=product_id
                     )
                     if len(products_configuration) > 0:
-                         categories[x]["products"][y]["product_configuration"] = products_configuration
-            
+                         categories[x]["products"][y]["configurations"] = products_configuration
 
-        return {
-            "categories": categories
-        }
+        return { "categories": categories }
         
     else:
         return HTTPException(

@@ -15,16 +15,13 @@ class Bill(BaseModel):
 class BillDescription(BaseModel):
     id_bill: int
     id_product_config: int
-    product_name: str
-    description: str
     quantity: int
     price: float
-    total: float
 
 
 class BillFront(BaseModel):
-    product_id: int
-    stock: int
+    id_product_config: int
+    quantity: int
     price: float
 
 

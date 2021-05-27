@@ -142,6 +142,6 @@ async def delete_category(current_id: int):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def update_category(request: Category):
-    query_path = path.join("products", "update_category.sql")
-    execute_query(query_path, False, **request.dict())
+    query_path = path.join("products", "category", "update_category.sql")
+    execute_query(query_path, **request.dict())
     return {"message": "Operation successful"}
