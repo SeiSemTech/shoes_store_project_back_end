@@ -19,11 +19,11 @@ app_bill = APIRouter()
 
 # Función para traer todas las categorias del sistema
 @app_bill.get(
-    path='description',
+    path='/description',
     status_code=200,
     tags=['Bill'],
     summary="Get all get categories in SQL database",
-    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+    dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def get_all_bill_description():
     query_path = path.join("bill", "get_all_bill_description.sql")
