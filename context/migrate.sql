@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS BillDescription (
 );
 
 CREATE TABLE IF NOT EXISTS bill (
-  id int(11) NOT NULL AUTO_INCREMENT,
+  id int(11) NOT NULL,
   id_user int(11) NOT NULL,
   date date NOT NULL,
   total_quantity int(11) NOT NULL,
