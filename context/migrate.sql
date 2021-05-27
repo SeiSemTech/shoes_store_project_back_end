@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS BillDescription (
 CREATE TABLE IF NOT EXISTS bill (
   id int(11) NOT NULL,
   id_user int(11) NOT NULL,
-  date date NOT NULL,
+  date timestamp NOT NULL,
   total_quantity int(11) NOT NULL,
   total_price int(11) NOT NULL,
   UNIQUE KEY (id)
@@ -213,11 +213,11 @@ INSERT INTO configuration (name, sub_configuratuion, extra_price) VALUES
   ('Talla', 39, 10000),
   ('Talla', 40, 10000),
   ('Talla', 41, 12000),
-  ('Color', Azul, 5000),
-  ('Color', Blanco, 0),
-  ('Color', Negro, 0),
-  ('Color', Rojo, 5000),
-  ('Color', Verde, 5000);
+  ('Color', "Azul", 5000),
+  ('Color', "Blanco", 0),
+  ('Color', "Negro", 0),
+  ('Color', "Rojo", 5000),
+  ('Color', "Verde", 5000);
 
 INSERT INTO product_configuration (product_id, configuration_id, config_display_order, sub_config_display_order, stock) VALUES
  -- Producto 1
