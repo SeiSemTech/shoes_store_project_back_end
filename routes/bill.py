@@ -30,10 +30,18 @@ app_bill = APIRouter()
     tags=['Bill'],
     summary="Create a bill"
 )
-
-async def create_bill(request: List[BillFront], user_id : int):
+async def create_bill(request: List[BillFront], token : str = Depends(JWTBearer(['Usuario Registrado', 'Administrador']))):
     print("")
     #Crear la factura
+    #
+    #Traer id del usuario x el Email
+    email = JWTBearer.get_email(token)
+    query_path = path.join("auth", "get_user_id_by_email.sql")# TODO 
+    user_id = execute_query(
+        query_name=query_path,
+        fetch_data=True,
+        email = email
+    )
     query_path = path.join("bill", "create_bill.sql")# TODO 
     execute_query(query_path, False, user_id) # los totales se hacen en el sql, en el chat de whatsapp jose explica como obtener el user id
     
