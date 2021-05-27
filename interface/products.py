@@ -20,6 +20,7 @@ class Product(BaseModel):
     display_order: int
 
 
+
 class Configuration(BaseModel):
     id: Optional[int] = None
     name: str

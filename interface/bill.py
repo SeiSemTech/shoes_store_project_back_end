@@ -22,6 +22,12 @@ class BillDescription(BaseModel):
     total: float
 
 
+class BillFront(BaseModel):
+    product_id: int
+    stock: int
+    price: float
+
+
 class BillCustomerOrder(BaseModel):
     order: List[CustomerProducts]
 

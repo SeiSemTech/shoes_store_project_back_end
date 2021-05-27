@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pymysql.err import IntegrityError
 
-
+from typing import List
 app_product = APIRouter()
 
 
@@ -191,3 +191,53 @@ async def update_product(request: Product):
     query_path = path.join("products", "update_product.sql")
     execute_query(query_path, False, **request.dict())
     return {"message": "Operation successful"}
+
+
+
+
+@app_product.get(
+    path='/activated_all_products',
+    status_code=200,
+    tags=['Product'],
+    summary="Read products in SQL database",
+    #dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+
+async def get_all_products(request : List[Category]): 
+     
+    query_path = path.join("products", "get_all_activated_categories.sql")
+    categories = execute_query(
+        query_name=query_path,
+        fetch_data=True
+    )
+
+    if len(categories) > 0:
+
+        for x in range(len(categories)):
+            query_path = path.join("products", "get_all_activated_products.sql")
+            products = execute_query(
+                query_name=query_path,
+                fetch_data=True
+            )
+
+            if len(products) > 0:
+                categories[x]["products"] = products
+                for y in range(len(products)):
+                    query_path = path.join("products", "get_all_activated_products_configurations.sql")
+                    products_configuration = execute_query(
+                        query_name=query_path,
+                        fetch_data=True
+                    )
+                    if len(products_configuration) > 0:
+                         categories[x]["products"][y]["product_configuration"] = products_configuration
+            
+
+        return {
+            "categories": categories
+        }
+        
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products have been published"
+        )
