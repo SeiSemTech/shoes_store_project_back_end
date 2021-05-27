@@ -36,10 +36,18 @@ class JWTBearer(HTTPBearer):
 
     @classmethod
     def get_role(cls, jwt_token: str) -> bool:
-        role = None
         try:
             payload = decode_jwt(jwt_token)
             role = payload['role']
         except:
-            payload = None
+            raise HTTPException(status_code=403, detail="Invalid authorization code.")
         return role
+
+    @classmethod
+    def get_email(cls, jwt_token: str) -> bool:
+        try:
+            payload = decode_jwt(jwt_token)
+            email = payload['user_id']
+        except:
+            raise HTTPException(status_code=403, detail="Invalid authorization code.")
+        return email

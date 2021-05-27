@@ -19,5 +19,5 @@ def send_dynamic_email(to_email, template_id, **kwargs):
         sg = sendgrid.SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.send(message)
     except Exception as e:
-        return HTTP_503_SERVICE_UNAVAILABLE
+        raise HTTP_503_SERVICE_UNAVAILABLE
     return response.status_code

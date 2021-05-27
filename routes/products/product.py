@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pymysql.err import IntegrityError
 
-
+from typing import List
 app_product = APIRouter()
 
 
@@ -66,7 +66,7 @@ async def get_all_products():
 
     if len(data) > 0:
         return {
-            "products": data  # TODO RETURN TOKEN
+            "products": data
         }
     else:
         return HTTPException(
@@ -91,7 +91,7 @@ async def get_all_products():
 
     if len(data) > 0:
         return {
-            "products": data  # TODO RETURN TOKEN
+            "products": data
         }
     else:
         return HTTPException(
@@ -117,7 +117,7 @@ async def get_product_by_id(current_id: int):
     )
     if len(data) > 0:
         return {
-            "product": data  # TODO RETURN TOKEN
+            "product": data
         }
     else:
         return HTTPException(
@@ -130,11 +130,38 @@ async def get_product_by_id(current_id: int):
     path='/product/{current_id}',
     status_code=201,
     tags=['Product'],
-    summary="Delete product in SQL database",
+    summary="Deactivate product in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def delete_product(current_id: int):
     query_path = path.join("products", "update_product_status.sql")
+    try:
+        execute_query(query_path, False, id=current_id)
+        response = jsonable_encoder({
+            "message": "success"
+        })
+    except IntegrityError:
+        return HTTPException(
+            status_code=HTTP_424_FAILED_DEPENDENCY,
+            detail="Database error, probably foreing key dependency error"
+        )
+    except:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products have been found"
+        )
+    return JSONResponse(content=response)
+
+
+@app_product.delete(
+    path='/product/force_delete/{current_id}',
+    status_code=201,
+    tags=['Product'],
+    summary="Delete product in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
+)
+async def delete_product(current_id: int):
+    query_path = path.join("products", "product", "delete_product.sql")
     try:
         execute_query(query_path, False, id=current_id)
         response = jsonable_encoder({
@@ -164,3 +191,53 @@ async def update_product(request: Product):
     query_path = path.join("products", "update_product.sql")
     execute_query(query_path, False, **request.dict())
     return {"message": "Operation successful"}
+
+
+
+
+@app_product.get(
+    path='/activated_all_products',
+    status_code=200,
+    tags=['Product'],
+    summary="Read products in SQL database",
+    #dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+
+async def get_all_products(request : List[Category]): 
+     
+    query_path = path.join("products", "get_all_activated_categories.sql")
+    categories = execute_query(
+        query_name=query_path,
+        fetch_data=True
+    )
+
+    if len(categories) > 0:
+
+        for x in range(len(categories)):
+            query_path = path.join("products", "get_all_activated_products.sql")
+            products = execute_query(
+                query_name=query_path,
+                fetch_data=True
+            )
+
+            if len(products) > 0:
+                categories[x]["products"] = products
+                for y in range(len(products)):
+                    query_path = path.join("products", "get_all_activated_products_configurations.sql")
+                    products_configuration = execute_query(
+                        query_name=query_path,
+                        fetch_data=True
+                    )
+                    if len(products_configuration) > 0:
+                         categories[x]["products"][y]["product_configuration"] = products_configuration
+            
+
+        return {
+            "categories": categories
+        }
+        
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No products have been published"
+        )
