@@ -28,7 +28,7 @@ async def get_password(email: str):
     try:
         template = EMAIL_CONFIGURATIONS['forgot']
     except KeyError:
-        return HTTPException(HTTP_404_NOT_FOUND, detail='The user already exists')
+        return HTTPException(HTTP_404_NOT_FOUND, detail='Configuration key not found')
 
     query_path = path.join("users", "user_id.sql")
     user_id = execute_query(

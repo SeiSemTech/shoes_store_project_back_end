@@ -1,5 +1,7 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
+
+from interface.products import CustomerProducts
 
 
 class Bill(BaseModel):
@@ -9,6 +11,7 @@ class Bill(BaseModel):
     total_quantity: float
     total_price: float
 
+
 class BillDescription(BaseModel):
     id_bill: int
     id_product_config: int
@@ -17,3 +20,10 @@ class BillDescription(BaseModel):
     quantity: int
     price: float
     total: float
+
+
+class BillCustomerOrder(BaseModel):
+    order: List[CustomerProducts]
+
+
+

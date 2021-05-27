@@ -34,3 +34,9 @@ class ProductConfiguration(BaseModel):
     config_display_order: int
     sub_config_display_order: int
     stock: int
+
+
+class CustomerProducts(BaseModel):
+    product_name: str
+    quantity: int
+    price: float

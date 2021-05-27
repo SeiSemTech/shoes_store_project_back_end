@@ -66,7 +66,7 @@ async def get_all_products():
 
     if len(data) > 0:
         return {
-            "products": data  # TODO RETURN TOKEN
+            "products": data
         }
     else:
         return HTTPException(
@@ -91,7 +91,7 @@ async def get_all_products():
 
     if len(data) > 0:
         return {
-            "products": data  # TODO RETURN TOKEN
+            "products": data
         }
     else:
         return HTTPException(
@@ -117,7 +117,7 @@ async def get_product_by_id(current_id: int):
     )
     if len(data) > 0:
         return {
-            "product": data  # TODO RETURN TOKEN
+            "product": data
         }
     else:
         return HTTPException(
