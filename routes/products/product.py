@@ -210,27 +210,25 @@ async def get_all_products():
 
     if len(categories) > 0:
 
-        for x in range(len(categories)):
-            query_path = path.join("products", "get_all_activated_products.sql")
+        for categories_index in range(len(categories)):
+            query_path = path.join("products", "get_all_activated_products_by_category_id.sql")
             products = execute_query(
                 query_name=query_path,
-                fetch_data=True
+                fetch_data=True,
+                category_id=categories[categories_index]['id']
             )
-            print(products)
-            if len(products) > 0:
-                categories[x]["products"] = products
-                for y in range(len(products)):
-                    query_path = path.join("products", "get_all_activated_products_configurations.sql")
-                    product_id = products[y]['id']
-                    products_configuration = execute_query(
-                        query_name=query_path,
-                        fetch_data=True,
-                        product_id=product_id
-                    )
-                    if len(products_configuration) > 0:
-                         categories[x]["products"][y]["configurations"] = products_configuration
-
-        return { "categories": categories }
+            categories[categories_index]["products"] = products
+            for product_index in range(len(products)):
+                query_path = path.join("products", "get_all_activated_products_configurations.sql")
+                products_configuration = execute_query(
+                    query_name=query_path,
+                    fetch_data=True,
+                    product_id=products[product_index]['id']
+                )
+                categories[categories_index]["products"][product_index]["configurations"] = products_configuration
+        return {
+            "categories": categories
+        }
         
     else:
         return HTTPException(

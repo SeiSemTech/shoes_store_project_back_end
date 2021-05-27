@@ -17,6 +17,31 @@ from typing import List
 app_bill = APIRouter()
 
 
+# Función para traer todas las categorias del sistema
+@app_bill.get(
+    path='description',
+    status_code=200,
+    tags=['Bill'],
+    summary="Get all get categories in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_all_bill_description():
+    query_path = path.join("bill", "get_all_bill_description.sql")
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True
+    )
+
+    if len(data) > 0:
+        return {
+            "bill_description": data
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No bill descriptions have been published"
+        )
+
 
 #Method to create a bill, bill_description, and update the product configuration stock
 @app_bill.post(
