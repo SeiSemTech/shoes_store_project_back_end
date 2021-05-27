@@ -103,6 +103,28 @@ CREATE TABLE IF NOT EXISTS product_configuration (
 );
 
 --
+-- Tablas Bill
+--
+CREATE TABLE IF NOT EXISTS BillDescription (
+  id_bill int(11) NOT NULL AUTO_INCREMENT,
+  id_product_config int(11) NOT NULL,
+  product_name VARCHAR(30) NOT NULL,
+  description VARCHAR(30) NOT NULL,
+  quantity int(11) NOT NULL,
+  price int(11) NOT NULL,
+  total int(11) NOT NULL,
+  UNIQUE KEY (id_bill)
+);
+
+CREATE TABLE IF NOT EXISTS bill (
+  id int(11) NOT NULL,
+  id_user int(11) NOT NULL,
+  date timestamp NOT NULL,
+  total_quantity int(11) NOT NULL,
+  total_price int(11) NOT NULL,
+  UNIQUE KEY (id)
+);
+--
 -- Índices para tablas volcadas
 --
 
@@ -161,8 +183,12 @@ ALTER TABLE product_configuration
   ADD CONSTRAINT FK_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
   ADD CONSTRAINT FK_CONFIGURATION FOREIGN KEY (configuration_id) REFERENCES configuration (id);
 
+ALTER TABLE BillDescription
+  ADD CONSTRAINT FK_BILLDESCRIPTION_PRODUCT_CONFIGURATION FOREIGN KEY (id_product_config) REFERENCES product_configuration (id),
+  ADD CONSTRAINT FK_BILLDESCRIPTION_BILL FOREIGN KEY (id_bill) REFERENCES bill (id);
 
-
+ALTER TABLE Bill
+  ADD CONSTRAINT FK_BILL_USERS FOREIGN KEY (id_user) REFERENCES USERS (user_id);
 --
 -- Poblar base de datos
 --
