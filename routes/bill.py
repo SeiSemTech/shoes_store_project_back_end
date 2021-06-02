@@ -96,6 +96,41 @@ async def create_bill(request: List[BillFront], token : str = Depends(JWTBearer(
             detail="It was not found a bill"
         )
 
+
+#Method to create a bill, bill_description, and update the product configuration stock
+@app_bill.get(
+    path='/user',
+    status_code=200,
+    tags=['Bill'],
+    summary="Create a bill"
+)
+async def get_bills_by_user_id(token : str = Depends(JWTBearer(['Usuario Registrado', 'Administrador']))):
+    email = JWTBearer.get_email(token)
+    query_path = path.join("users", "user_id.sql")
+    user_id = execute_query(
+        query_name=query_path,
+        fetch_one=True,
+        email=email
+    )['user_id']
+
+    query_path = path.join("bill", "get_history_bill_by_user_id.sql")
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True,
+        id_user=user_id
+    )
+
+    if len(data) > 0:
+        return {
+            "bill_description": data
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No bill descriptions have been published for this user"
+        )
+
+
 ##
 ## Método para enviar e-mail del histórico de la compra
 ##1

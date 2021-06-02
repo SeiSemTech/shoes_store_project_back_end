@@ -1,4 +1,12 @@
--- Consulta en la tabla bill por el user_id, nos devuelve todo el historico de facturas arraigadas al user_id indicado.
-SELECT id, id_user, date, total_quantity, total_price FROM bill
-    WHERE bill.id_user = {{ id_user }}
-        ORDER BY DATE DESC;
+SELECT BILLDESCRIPTION.id_bill, CONCAT(PRODUCT.name, ' ', CONFIGURATION.name) product_name, BILLDESCRIPTION.quantity, BILLDESCRIPTION.price, BILL.date
+FROM BILL
+LEFT JOIN BILLDESCRIPTION
+  ON BILLDESCRIPTION.id_bill = BILL.id
+LEFT JOIN PRODUCT_CONFIGURATION
+  ON PRODUCT_CONFIGURATION.id = BILLDESCRIPTION.id_product_config
+LEFT JOIN PRODUCT
+  ON PRODUCT.ID = PRODUCT_CONFIGURATION.product_id
+LEFT JOIN CONFIGURATION
+  ON CONFIGURATION.id = PRODUCT_CONFIGURATION.configuration_id
+WHERE BILL.id_user = {{ id_user }}
+ORDER BY BILL.date DESC;
