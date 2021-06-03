@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS product (
   id int(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) NOT NULL,
   status int(2) NOT NULL,
-  image VARCHAR(30) NOT NULL,
+  image VARCHAR(255) NOT NULL,
   price int(11) NOT NULL,
   description VARCHAR(255) NOT NULL,
   category_id int(11) NOT NULL,
@@ -102,6 +102,25 @@ CREATE TABLE IF NOT EXISTS product_configuration (
   UNIQUE KEY (id)
 );
 
+--
+-- Tablas Bill
+--
+CREATE TABLE IF NOT EXISTS BillDescription (
+  id_bill int(11) NOT NULL,
+  id_product_config int(11) NOT NULL,
+  quantity int(11) NOT NULL,
+  price int(11) NOT NULL,
+  UNIQUE KEY (id_bill, id_product_config)
+);
+
+CREATE TABLE IF NOT EXISTS bill (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  id_user int(11) NOT NULL,
+  date timestamp NOT NULL,
+  total_quantity int(11) NOT NULL,
+  total_price int(11) NOT NULL,
+  UNIQUE KEY (id)
+);
 --
 -- Índices para tablas volcadas
 --
@@ -161,8 +180,12 @@ ALTER TABLE product_configuration
   ADD CONSTRAINT FK_PRODUCT FOREIGN KEY (product_id) REFERENCES product (id),
   ADD CONSTRAINT FK_CONFIGURATION FOREIGN KEY (configuration_id) REFERENCES configuration (id);
 
+ALTER TABLE BillDescription
+  ADD CONSTRAINT FK_BILLDESCRIPTION_PRODUCT_CONFIGURATION FOREIGN KEY (id_product_config) REFERENCES product_configuration (id),
+  ADD CONSTRAINT FK_BILLDESCRIPTION_BILL FOREIGN KEY (id_bill) REFERENCES bill (id);
 
-
+ALTER TABLE Bill
+  ADD CONSTRAINT FK_BILL_USERS FOREIGN KEY (id_user) REFERENCES USERS (user_id);
 --
 -- Poblar base de datos
 --
@@ -181,12 +204,12 @@ INSERT INTO login (user_id, password) VALUES
 
 INSERT INTO category (name, status, display_order) VALUES
   ('Promociones', 1, 1),
-  ('Temporada de Verano', 0, 2);
+  ('Temporada de Verano', 1, 2);
 
 INSERT INTO product (name, status, image, price, description, category_id, display_order) VALUES
   ('Zapatillas Nike', 1, 'Url Imagen', 150000, 'Hermosa Zapatilla Nike con tecnologia de Running', 1, 1),
   ('Zapatillas Adidas', 1, 'Url Imagen', 220000, 'Hermosa Zapatilla Adidas con tecnologia ultraboost', 1, 2),
-  ('Zapatillas Puma', 0, 'Url Imagen', 280000, 'Hermosa Zapatilla Puma para salto', 2, 3);
+  ('Zapatillas Puma', 1, 'Url Imagen', 280000, 'Hermosa Zapatilla Puma para salto', 2, 3);
 
 INSERT INTO configuration (name, sub_configuration, extra_price) VALUES
   ('Talla', 38, 0),
@@ -202,8 +225,8 @@ INSERT INTO configuration (name, sub_configuration, extra_price) VALUES
 INSERT INTO product_configuration (product_id, configuration_id, config_display_order, sub_config_display_order, stock) VALUES
  -- Producto 1
  (1, 1, 1, 1, 5),
- (1, 2, 1, 2, 5),
- (1, 3, 1, 3, 5),
+ (1, 2, 2, 2, 5),
+ (1, 3, 3, 3, 5),
  (1, 4, 1, 4, 5),
  (1, 5, 2, 1, 5),
  (1, 6, 2, 2, 5),

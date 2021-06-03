@@ -79,7 +79,33 @@ async def get_all_categories():
         )
 
 
-#DELETE METHODS
+# Función para traer todas las categorias del sistema
+@app_category.get(
+    path='/categories/{current_id}',
+    status_code=200,
+    tags=['Categories'],
+    summary="Read categories in SQL database",
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+)
+async def get_category_by_id(current_id: int):
+    query_path = path.join("products", "category", "get_category_by_id.sql")
+
+    data = execute_query(
+        query_name=query_path,
+        fetch_data=True,
+        id=current_id
+    )
+    if len(data) > 0:
+        return {
+            "category": data
+        }
+    else:
+        return HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="No category have been published"
+        )
+
+
 @app_category.delete(
     path='/category/{current_id}',
     status_code=201,
@@ -116,6 +142,6 @@ async def delete_category(current_id: int):
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def update_category(request: Category):
-    query_path = path.join("products", "update_category.sql")
-    execute_query(query_path, False, **request.dict())
+    query_path = path.join("products", "category", "update_category.sql")
+    execute_query(query_path, **request.dict())
     return {"message": "Operation successful"}

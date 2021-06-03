@@ -20,6 +20,7 @@ class Product(BaseModel):
     display_order: int
 
 
+
 class Configuration(BaseModel):
     id: Optional[int] = None
     name: str
@@ -34,3 +35,9 @@ class ProductConfiguration(BaseModel):
     config_display_order: int
     sub_config_display_order: int
     stock: int
+
+
+class CustomerProducts(BaseModel):
+    product_name: str
+    quantity: int
+    price: float
