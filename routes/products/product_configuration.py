@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from os import path
 from database.mysql import execute_query
-from starlette.status import HTTP_404_NOT_FOUND, HTTP_424_FAILED_DEPENDENCY
+from starlette.status import HTTP_404_NOT_FOUND, HTTP_424_FAILED_DEPENDENCY, HTTP_500_INTERNAL_SERVER_ERROR
 from pymysql.err import IntegrityError
 from interface.products import *
 from fastapi import HTTPException, Depends
@@ -22,12 +22,23 @@ app_product_configuration = APIRouter()
 )
 async def product_configuration(request: ProductConfiguration):
     query_path = path.join("products", "create_product_configuration.sql")
-    execute_query(query_path, False, **request.dict())
-    response = jsonable_encoder({
-        "message": "success"
-    })
+    try:
+        execute_query(query_path, False, **request.dict())
+        response = jsonable_encoder({
+            "message": "success"
+        })
 
-    return JSONResponse(content=response)
+        return JSONResponse(content=response)
+    except IntegrityError:
+        return HTTPException(
+            status_code=HTTP_424_FAILED_DEPENDENCY,
+            detail="Error de integridad de llaves"
+        )
+    except Exception:
+        return HTTPException(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error interno del servidor"
+        )
 
 
 @app_product_configuration.get(

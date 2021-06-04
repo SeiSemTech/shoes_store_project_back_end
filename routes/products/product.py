@@ -21,7 +21,7 @@ app_product = APIRouter()
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product(request: Product):
-    query_path = path.join("products", "get_productID_by_name.sql")
+    query_path = path.join("products", "get_product_id_by_name.sql")
     product_id = execute_query(query_path, True, **request.dict())
 
     if len(product_id) > 0:
