@@ -169,3 +169,18 @@ async def send_bill_email(request: BillCustomerOrder, token: str = Depends(JWTBe
             status_code=HTTP_503_SERVICE_UNAVAILABLE,
             detail="Problem with email provider"
         )
+
+@app_bill.patch(
+    path='/update_bill_status',
+    status_code=200,
+    tags=['Bill'],
+    summary="Update Bill Status in SQL database",
+    dependencies=[Depends(JWTBearer(['Administrador']))]
+)
+async def update_bill_satus(request: BillUpdateStatus ):
+    query_path = path.join("products", "update_bill_satus.sql")
+    execute_query(query_path, False, **request.dict())
+    return HTTPException(
+        status_code=HTTP_200_OK,
+        detail="The bill has updated success"
+    )
