@@ -21,7 +21,7 @@ app_configuration = APIRouter()
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_configuration(request: Configuration):
-    query_path = path.join("products", "get_configuration_id_by_name.sql")
+    query_path = path.join("products", "product", "configuration", "get_configuration_id_by_name.sql")
     configuration_id = execute_query(query_path, True, **request.dict())
 
     # VALIDATE IF THE CONFIGURATION EXIST
