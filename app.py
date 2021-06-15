@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import app_auth, app_users, app_products, app_password, app_bill
+from routes import app_auth, app_users, app_products, app_password, app_bill, app_location
 from database import mysql
 from settings import ENVIRONMENT
 
@@ -24,6 +24,7 @@ app.include_router(app_users, prefix='/api')
 app.include_router(app_products, prefix='/api/products')
 app.include_router(app_bill, prefix='/api/bill')
 app.include_router(app_password, prefix='/api')
+app.include_router(app_location, prefix='/api')
 
 
 @app.on_event('startup')
