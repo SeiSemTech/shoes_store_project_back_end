@@ -21,7 +21,7 @@ app_product = APIRouter()
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
 async def create_product(request: Product):
-    query_path = path.join("products", "get_productID_by_name.sql")
+    query_path = path.join("products", "get_product_id_by_name.sql")
     product_id = execute_query(query_path, True, **request.dict())
 
     if len(product_id) > 0:
@@ -193,17 +193,14 @@ async def update_product(request: Product):
     return {"message": "Operation successful"}
 
 
-
-
 @app_product.get(
     path='/activated_all_products',
     status_code=200,
     tags=['Product'],
     summary="Read products in SQL database",
-    #dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
+    dependencies=[Depends(JWTBearer(['Usuario Registrado', 'Administrador']))]
 )
-
-async def get_all_products(request : List[Category]): 
+async def get_all_products():
      
     query_path = path.join("products", "get_all_activated_categories.sql")
     categories = execute_query(
@@ -213,25 +210,22 @@ async def get_all_products(request : List[Category]):
 
     if len(categories) > 0:
 
-        for x in range(len(categories)):
-            query_path = path.join("products", "get_all_activated_products.sql")
+        for categories_index in range(len(categories)):
+            query_path = path.join("products", "get_all_activated_products_by_category_id.sql")
             products = execute_query(
                 query_name=query_path,
-                fetch_data=True
+                fetch_data=True,
+                category_id=categories[categories_index]['id']
             )
-
-            if len(products) > 0:
-                categories[x]["products"] = products
-                for y in range(len(products)):
-                    query_path = path.join("products", "get_all_activated_products_configurations.sql")
-                    products_configuration = execute_query(
-                        query_name=query_path,
-                        fetch_data=True
-                    )
-                    if len(products_configuration) > 0:
-                         categories[x]["products"][y]["product_configuration"] = products_configuration
-            
-
+            categories[categories_index]["products"] = products
+            for product_index in range(len(products)):
+                query_path = path.join("products", "get_all_activated_products_configurations.sql")
+                products_configuration = execute_query(
+                    query_name=query_path,
+                    fetch_data=True,
+                    product_id=products[product_index]['id']
+                )
+                categories[categories_index]["products"][product_index]["configurations"] = products_configuration
         return {
             "categories": categories
         }
