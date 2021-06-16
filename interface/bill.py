@@ -10,6 +10,7 @@ class Bill(BaseModel):
     date: str
     total_quantity: float
     total_price: float
+    status: str
 
 
 class BillDescription(BaseModel):
@@ -23,6 +24,10 @@ class BillFront(BaseModel):
     id_product_config: int
     quantity: int
     price: float
+
+class BillUpdateStatus(BaseModel):
+    id: int
+    status: str
 
 
 class BillCustomerOrder(BaseModel):

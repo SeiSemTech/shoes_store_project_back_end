@@ -119,6 +119,7 @@ CREATE TABLE IF NOT EXISTS bill (
   date timestamp NOT NULL,
   total_quantity int(11) NOT NULL,
   total_price int(11) NOT NULL,
+  status VARCHAR(30) NOT NULL,
   UNIQUE KEY (id)
 );
 --
