@@ -1,9 +1,11 @@
 SELECT
+  Bill.id,
   BillDescription.id_product_config,
   CONCAT(PRODUCT.name, ' ', CONFIGURATION.name) name,
   BILL.date,
   BillDescription.quantity,
-  BillDescription.price
+  BillDescription.price,
+  Bill.status
 FROM BillDescription
 LEFT JOIN Bill
   ON BILL.id = BillDescription.id_bill
