@@ -206,8 +206,8 @@ async def send_bill_email(request: BillCustomerOrder, token: str = Depends(JWTBe
     summary="Update Bill Status in SQL database",
     dependencies=[Depends(JWTBearer(['Administrador']))]
 )
-async def update_bill_satus(request: BillUpdateStatus ):
-    query_path = path.join("products", "update_bill_satus.sql")
+async def update_bill_status(request: BillUpdateStatus):
+    query_path = path.join("bill", "update_bill_status.sql")
     execute_query(query_path, False, **request.dict())
     return HTTPException(
         status_code=HTTP_200_OK,
